@@ -1,19 +1,23 @@
+import classes.Caminhoes;
 import classes.Distancia;
-import classes.Produtos;
+import classes.Menu;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        Menu menu = new Menu();
+        menu.exibirMenu();
+
         Distancia distancia = new Distancia();
 
-        System.out.println(distancia.calculaDistancia("CAMPO GRANDE", "RIO DE JANEIRO"));
+        //System.out.println(distancia.calculaDistancia("CAMPO GRANDE", "RIO DE JANEIRO"));
 
-        Produtos produtos = new Produtos();
-        System.out.println(produtos.getPesoProduto("Celular"));
-        System.out.println(produtos.getPesoProduto(""));
-        System.out.println(produtos.getPesoProduto("termica"));
+        Caminhoes caminhoes = new Caminhoes();
+        System.out.println(caminhoes.getCapacidadeMaximaTonelada("pequeno"));
+        System.out.println(caminhoes.getCapacidadeMaximaTonelada("medio"));
+        System.out.println(caminhoes.getCapacidadeMaximaTonelada("grande"));
+        System.out.println(caminhoes.getCapacidadeMaximaTonelada("a"));
 
     }
-
 }

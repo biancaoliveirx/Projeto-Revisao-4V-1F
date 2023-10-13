@@ -14,7 +14,7 @@ Ao longo do projeto, também aprimoramos nossas habilidades com o uso do **Git**
 
 ## Contribuidores
 - **Bianca Santos de Oliveira**
-- **Carolina Linck Lopes**
+- **Carolina Vitória Linck Lopes**
 - **Isabela Baseggio**
 - **Karoline Vargas**
 - **Bruno Santos Silveira**
