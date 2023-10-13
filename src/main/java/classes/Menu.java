@@ -9,6 +9,8 @@ public class Menu {
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
 
+    private static int totalDeItensTransportados = 0;
+
     public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
         produtos = new Produtos(); //cria uma instância da classe Produtos
@@ -115,5 +117,9 @@ public class Menu {
     public void consultarTrechoModalidade() {}
     public void cadastrarTransportes() {}
     public void relatorioTransportesCadastrados() {}
+
+    private void atualizarTotalDeItensTransportados(int quantidadeDeItens){
+        totalDeItensTransportados += quantidadeDeItens;
+    }
 }
 
