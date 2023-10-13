@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CaminhoesTest {
     @Test
-    public void getPrecoPorKm(){
+    public void getPrecoPorKm() {
         // instanciei a classe caminhoes
         Caminhoes caminhoes = new Caminhoes();
 
@@ -20,18 +20,20 @@ public class CaminhoesTest {
         assertEquals(29.21, precoCaminhaoGrande);
 
     }
+
     @Test
     // aqui fiz o teste da exceção de entrada inválida
-    public void getPrecoPorKmExcecao(){
+    public void getPrecoPorKmExcecao() {
         Caminhoes caminhoes = new Caminhoes();
         try {
             double precoCaminhaoInvalido = caminhoes.getPrecoPorKm("gigante");
-        } catch (IllegalArgumentException exception){
+        } catch (IllegalArgumentException exception) {
             assertEquals("Modalidade de caminhão inválida", exception.getMessage());
         }
     }
+
     @Test
-    public void getCapacidadeMaximaTonelada(){
+    public void getCapacidadeMaximaTonelada() {
         Caminhoes caminhoes = new Caminhoes();
         double capacidadeCaminhaoPequeno = caminhoes.getCapacidadeMaximaTonelada("pequeno");
         assertEquals(1, capacidadeCaminhaoPequeno);
@@ -42,13 +44,17 @@ public class CaminhoesTest {
         double capacidadeCaminhaoGrande = caminhoes.getCapacidadeMaximaTonelada("grande");
         assertEquals(10, capacidadeCaminhaoGrande);
     }
+
     @Test
-    public void getCapacidadeMaximaToneladaExcecao(){
+    public void getCapacidadeMaximaToneladaExcecao() {
         Caminhoes caminhoes = new Caminhoes();
         try {
-            double precoCaminhaoInvalido = caminhoes.getPrecoPorKm("gigante");
-        } catch (IllegalArgumentException exception){
+            double precoCaminhaoInvalido = caminhoes.getCapacidadeMaximaTonelada("gigante");
+        } catch (IllegalArgumentException exception) {
             assertEquals("Modalidade de caminhão inválida", exception.getMessage());
+
         }
     }
 }
+
+
