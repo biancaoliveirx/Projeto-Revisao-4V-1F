@@ -1,13 +1,17 @@
 import classes.Caminhoes;
 import classes.Distancia;
+import classes.Menu;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        Menu menu = new Menu();
+        menu.exibirMenu();
+
         Distancia distancia = new Distancia();
 
-//        System.out.println(distancia.calculaDistancia("CAMPO GRANDE", "RIO DE JANEIRO"));
+        //System.out.println(distancia.calculaDistancia("CAMPO GRANDE", "RIO DE JANEIRO"));
 
         Caminhoes caminhoes = new Caminhoes();
         System.out.println(caminhoes.getCapacidadeMaximaTonelada("pequeno"));
@@ -16,5 +20,4 @@ public class Main {
         System.out.println(caminhoes.getCapacidadeMaximaTonelada("a"));
 
     }
-
 }

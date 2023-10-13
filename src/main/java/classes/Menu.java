@@ -113,9 +113,4 @@ public class Menu {
             System.out.println("Produto não encontrado na lista.");
         }
     }
-
-    public static void main(String[] args) {
-        Menu menu = new Menu();
-        menu.exibirMenu();
-    }
 }
