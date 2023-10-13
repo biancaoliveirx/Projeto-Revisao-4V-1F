@@ -6,38 +6,35 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Menu {
-    private Map<String, Integer> produtosList;
-    private Produtos produtos;
+    private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
+    private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
 
-    public void listarNomesProdutos() {
-        produtosList = new HashMap<>();
-        produtos = new Produtos();
-        List<String> nomesProdutos = produtos.getNomesProdutos();
+    public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
+        produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
+        produtos = new Produtos(); //cria uma instância da classe Produtos
+        List<String> nomesProdutos = produtos.getNomesProdutos(); //obtém a lista de nomes de produtos chamando o método getNomesProdutos()
 
         System.out.println("Nomes dos produtos disponíveis:");
 
-        for (String nomeProduto : nomesProdutos) {
+        for (String nomeProduto : nomesProdutos) { //exibem os nomes dos produtos disponíveis no console
             System.out.println(nomeProduto);
         }
     }
 
-    public Menu() {
-        produtosList = new HashMap<>();
-        produtos = new Produtos();
+    public Menu() { //construtor
+        produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
+        produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
     }
 
-    public void exibirMenu() {
-            List<String> nomesProdutos = produtos.getNomesProdutos();
+    public void exibirMenu() { //responsável por exibir o menu principal e interagir com o usuário
 
-            System.out.println("Nomes dos produtos disponíveis:");
-
-            for (String nomeProduto : nomesProdutos) {
-                System.out.println(nomeProduto);
-            }
+        listarNomesProdutos();
 
         Scanner scanner = new Scanner(System.in);
 
-        while (true) {
+        while (true) { //inicia um loop infinito para exibir o menu e aguardar a entrada do usuário
+
+            //exibe as opções do menu no console
             System.out.println("\nMenu:");
             System.out.println("1. Adicionar produto à lista");
             System.out.println("2. Exibir produtos da lista");
@@ -47,6 +44,7 @@ public class Menu {
 
             int opcao = scanner.nextInt();
 
+            //usa um bloco switch para determinar qual ação executar com base na opção escolhida
             switch (opcao) {
                 case 1:
                     adicionarProduto();
@@ -113,4 +111,9 @@ public class Menu {
             System.out.println("Produto não encontrado na lista.");
         }
     }
+
+    public void consultarTrechoModalidade() {}
+    public void cadastrarTransportes() {}
+    public void relatorioTransportesCadastrados() {}
 }
+
