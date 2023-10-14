@@ -12,8 +12,11 @@ public class Distancia {
     private String[] cidades = null;
     private int[][] distancias = null;
 
+    private String diretorioAtual = System.getProperty("user.dir");
+    private String caminhoRelativo = diretorioAtual + "/csv/distancia.csv";
+
     public Distancia() {
-        try (BufferedReader leitor = new BufferedReader(new FileReader("..\\Projeto-Revisao-4V-1F\\csv\\distancia.csv"))) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(this.caminhoRelativo))) {
             String linha;
             int row = 0;
             while ((linha = leitor.readLine()) != null) {
@@ -43,5 +46,9 @@ public class Distancia {
         } else {
             return 0;
         }
+    }
+
+    public String[] getCidades(){
+        return this.cidades;
     }
 }
