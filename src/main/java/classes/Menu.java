@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Menu {
+
+    private Distancia distancias = new Distancia();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
 
@@ -26,6 +28,23 @@ public class Menu {
     public Menu() { //construtor
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
         produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
+
+        // Listando as cidades quando a classe Menu é instânciada
+        System.out.println("Cidades:");
+        for (int i = 0; i < distancias.getCidades().length; i++){
+            if(i > 0 && i % 3 == 0) {
+                System.out.println(" ");
+            }
+            System.out.print(distancias.getCidades()[i] + "  -  ");
+        }
+        System.out.println(" ");
+        System.out.println(" ");
+
+        // Listando as modalidades de caminhão quando a classe Menu é instânciada
+        System.out.println("Modalidades de caminhão:\n" +
+                            "Pequeno  -  Médio  -  Grande");
+
+        System.out.println(" ");
     }
 
     public void exibirMenu() { //responsável por exibir o menu principal e interagir com o usuário

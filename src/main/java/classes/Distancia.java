@@ -15,9 +15,12 @@ public class Distancia {
     // Matriz 2D para armazenar as distâncias entre as cidades.
     private int[][] distancias = null;
 
+    private String diretorioAtual = System.getProperty("user.dir");
+    private String caminhoRelativo = diretorioAtual + "/csv/distancia.csv";
+
     // Construtor da classe Distancia.
     public Distancia() {
-        try (BufferedReader leitor = new BufferedReader(new FileReader("..\\Projeto-Revisao-4V-1F\\csv\\distancia.csv"))) {
+        try (BufferedReader leitor = new BufferedReader(new FileReader(this.caminhoRelativo))) {
             String linha;
             int row = 0;
 
@@ -58,5 +61,9 @@ public class Distancia {
             // Se uma das cidades ou ambas não estiverem presentes, retorna 0.
             return 0;
         }
+    }
+
+    public String[] getCidades(){
+        return this.cidades;
     }
 }
