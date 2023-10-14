@@ -11,6 +11,9 @@ public class Menu {
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
 
+    private static double custoTotal = 0;
+    private static double custoMedioPorKm = 0;
+    private static int numeroTotalVeiculosDeslocados = 0;
     private static int totalDeItensTransportados = 0;
 
     public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
@@ -100,7 +103,7 @@ public class Menu {
 
             if (quantidade > 0) {
                 produtosList.put(nomeProduto, quantidade);
-                System.out.println("Produto adicionado à lista: " +nomeProduto+ "\nQuantidade: " +quantidade);
+                System.out.println("Produto adicionado à lista: " + nomeProduto + "\nQuantidade: " + quantidade);
             } else {
                 System.out.println("A quantidade deve ser maior que zero.");
             }
@@ -131,6 +134,17 @@ public class Menu {
         } else {
             System.out.println("Produto não encontrado na lista.");
         }
+    }
+
+    public void atualizarCustoTotal(double valor) {
+        // soma o custo total com o valor
+        custoTotal += valor;
+        System.out.println(custoTotal);
+    }
+
+    public void atualizarCustoMedioKm() {
+        custoMedioPorKm = custoTotal / numeroTotalVeiculosDeslocados;
+        System.out.println(custoMedioPorKm);
     }
 
     public void consultarTrechoModalidade() {}
