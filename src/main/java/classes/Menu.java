@@ -9,6 +9,11 @@ public class Menu {
     private Map<String, Integer> produtosList;
     private Produtos produtos;
 
+    // static é que só pertence a própria classe
+    private static double custoTotal = 0;
+    private static double custoMedioPorKm = 0;
+    private static int numeroTotalVeiculosDeslocados = 0;
+
     public void listarNomesProdutos() {
         produtosList = new HashMap<>();
         produtos = new Produtos();
@@ -27,13 +32,13 @@ public class Menu {
     }
 
     public void exibirMenu() {
-            List<String> nomesProdutos = produtos.getNomesProdutos();
+        List<String> nomesProdutos = produtos.getNomesProdutos();
 
-            System.out.println("Nomes dos produtos disponíveis:");
+        System.out.println("Nomes dos produtos disponíveis:");
 
-            for (String nomeProduto : nomesProdutos) {
-                System.out.println(nomeProduto);
-            }
+        for (String nomeProduto : nomesProdutos) {
+            System.out.println(nomeProduto);
+        }
 
         Scanner scanner = new Scanner(System.in);
 
@@ -81,7 +86,7 @@ public class Menu {
 
             if (quantidade > 0) {
                 produtosList.put(nomeProduto, quantidade);
-                System.out.println("Produto adicionado à lista: " +nomeProduto+ "\nQuantidade: " +quantidade);
+                System.out.println("Produto adicionado à lista: " + nomeProduto + "\nQuantidade: " + quantidade);
             } else {
                 System.out.println("A quantidade deve ser maior que zero.");
             }
@@ -112,5 +117,16 @@ public class Menu {
         } else {
             System.out.println("Produto não encontrado na lista.");
         }
+    }
+
+    public void atualizarCustoTotal(double valor) {
+        // soma o custo total com o valor
+        custoTotal += valor;
+        System.out.println(custoTotal);
+    }
+
+    public void atualizarCustoMedioKm() {
+        custoMedioPorKm = custoTotal / numeroTotalVeiculosDeslocados;
+        System.out.println(custoMedioPorKm);
     }
 }
