@@ -15,7 +15,7 @@ public class Caminhoes {
     }
 
     public double getPrecoPorKm(String tipoCaminhao) {
-        // Verifique se o tipo de caminhão existe no mapa.
+        // Verifique se o tipo de caminhão existe no mapa
         if (precoPorKm.containsKey(tipoCaminhao)) {
             return precoPorKm.get(tipoCaminhao);
         } else {
