@@ -109,7 +109,7 @@ public class Menu extends Caminhoes {
                 produtosList.put(nomeProduto, quantidade);
 //                double custoTransporte = calcularCustoTransporte(tipoCaminhao, distancia);
 //                transportes.add(new Transporte(tipoCaminhao, custoTransporte));
-                System.out.println("Produto adicionado à lista: " +nomeProduto+ "\nQuantidade: " +quantidade);
+                System.out.println("Produto adicionado à lista: " + nomeProduto + "\nQuantidade: " + quantidade);
             } else {
                 System.out.println("A quantidade deve ser maior que zero.");
             }
@@ -145,15 +145,15 @@ public class Menu extends Caminhoes {
     private void listarCidades() {
         // Listando as cidades quando a classe Menu é instânciada
         System.out.println("Cidades:");
-        for (int i = 0; i < distancias.getCidades().length; i++){
-            if(i > 0 && i % 3 == 0) {
+        for (int i = 0; i < distancias.getCidades().length; i++) {
+            if (i > 0 && i % 3 == 0) {
                 System.out.println(" ");
             }
             System.out.print(distancias.getCidades()[i] + "  -  ");
         }
     }
 
-    private void listarModaldidadesDeCaminhao(){
+    private void listarModaldidadesDeCaminhao() {
         // Listando as modalidades de caminhão quando a classe Menu é instânciada
         System.out.println("Modalidades de caminhão:\n" +
                 "Pequeno [1 tonelada] -  Médio [4 toneladas] -  Grande [10 toneladas]");
@@ -171,16 +171,16 @@ public class Menu extends Caminhoes {
         System.out.println(custoMedioPorKm);
     }
 
-    public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens){
+    public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens) {
 
         // verifica esse item já foi inserido na lista de item específico transportado
-        if(totalDeCadaTipoDeItemTransportado.containsKey(produto)){
+        if (totalDeCadaTipoDeItemTransportado.containsKey(produto)) {
 
             // percorre a lista de item específico transportado
-            for (Map.Entry<String, Integer> item: totalDeCadaTipoDeItemTransportado.entrySet()){
+            for (Map.Entry<String, Integer> item : totalDeCadaTipoDeItemTransportado.entrySet()) {
 
                 // comparar a chave da lista com o nome do produto
-                if (item.getKey().equalsIgnoreCase(produto)){
+                if (item.getKey().equalsIgnoreCase(produto)) {
                     int novaQuantidade = item.getValue() + quantidadeDeItens;
 
                     // atualiza a quantidade do item específico transportado
@@ -198,13 +198,22 @@ public class Menu extends Caminhoes {
         totalDeItensTransportados += quantidadeDeItens;
     }
 
-    private void atualizarNumeroTotalDeVeiculosDeslocados(int quantidadeDeVeiculos){
+    private void atualizarNumeroTotalDeVeiculosDeslocados(int quantidadeDeVeiculos) {
         numeroTotalDeVeiculosDeslocados += quantidadeDeVeiculos;
     }
 
-    public void consultarTrechoModalidade() {}
-    public void cadastrarTransportes() {}
-    public void relatorioTransportesCadastrados() {}
+
+    //==================================================================================================================
+
+
+    public void consultarTrechoModalidade() {
+    }
+
+    public void cadastrarTransportes() {
+    }
+
+    public void relatorioTransportesCadastrados() {
+    }
 
 //    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
 //        double custoTotal = 0;
@@ -228,5 +237,23 @@ public class Menu extends Caminhoes {
             double valor = quantidade * caminhoes.getPrecoPorKm(tipoCaminhao);
             totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, valor);
         }
+    }
+
+    //método para calcular o valor da viagem de uma cidade para a outra
+    public void calculaValorDaViagem (String cidadeOrigem, String cidadeDestino, String tipoCaminhao) {
+        Distancia distancia = new Distancia(); //instância a classe Distancia para calcular a distância entre cidades
+
+        int distanciaKm = distancia.calcularDistanciaEntreCidades(cidadeOrigem, cidadeDestino);
+        if (distanciaKm <= 0) { //verifica se distância > 0
+            System.out.println("As cidades " + cidadeOrigem + " e " + cidadeDestino + " estão na mesma localização ou a distância não foi encontrada na nossa base de dados.");
+            return;
+        }
+
+        double precoPorKm = caminhoes.getPrecoPorKm(tipoCaminhao);
+        double custoTransporte = distanciaKm * precoPorKm;
+
+        System.out.println("A distância entre " + cidadeOrigem + " e " + cidadeDestino + ": " + distanciaKm + " km");
+        System.out.println("Modalidade de caminhão escolhido: " + tipoCaminhao);
+        System.out.println("Custo da viagem: R$" + custoTransporte);
     }
 }
