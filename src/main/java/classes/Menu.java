@@ -1,13 +1,11 @@
 package classes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Menu extends Caminhoes {
     private Distancia distancias = new Distancia();
+    private Caminhoes caminhoes = new Caminhoes();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
 
@@ -206,7 +204,6 @@ public class Menu extends Caminhoes {
     //==================================================================================================================
 
 
-
     //método para calcular o valor da viagem de uma cidade para a outra
     public void calculaValorDaViagem(String cidadeOrigem, String cidadeDestino, String tipoCaminhao) {
         Distancia distancia = new Distancia(); //instância a classe Distancia para calcular a distância entre cidades
@@ -234,5 +231,38 @@ public class Menu extends Caminhoes {
             }
         }
         System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
+    }
+
+    public void solicitarCidadesETransportes() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Digite a cidade de origem: "); //pede cidade de origem
+        try {
+            String cidadeOrigem = scanner.nextLine();
+            if (cidadeOrigem.isEmpty()) {
+                throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
+            }
+            if (!Arrays.asList(distancias.getCidades()).contains(cidadeOrigem.toUpperCase())) {
+                throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
+            }
+            System.out.print("Digite a cidade de destino: "); //pede cidade de destino
+            String cidadeDestino = scanner.nextLine();
+            if (cidadeDestino.isEmpty()) {
+                throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
+            }
+            if (!Arrays.asList(distancias.getCidades()).contains(cidadeDestino.toUpperCase())) {
+                throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
+            }
+            System.out.print("Escolha o tipo de caminhão (pequeno, medio, grande): "); //pede o tipo de caminhão
+            String tipoCaminhao = scanner.nextLine();
+            if (tipoCaminhao.isEmpty()) {
+                throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
+            }
+            if (!Arrays.asList(caminhoes.getTipoCaminhoes()).contains(tipoCaminhao.toLowerCase())) {
+                throw new IllegalArgumentException("O tipo de caminhão escolhido não existe na nossa base de dados!");
+            }
+        } catch (IllegalArgumentException | InputMismatchException exception) {
+            System.out.println(exception.getMessage());
+        }
     }
 }

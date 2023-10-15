@@ -7,6 +7,7 @@ public class Caminhoes {
 
     private Map<String, Double> precoPorKm = new HashMap<>();
     private Map<String, Double> capacidadeToneladas = new HashMap<>();
+    private String[] tipoCaminhoes = {"pequeno", "medio", "grande"};
 
     public Caminhoes() {
         //inicia os preços por km para cada tipo de caminhão
@@ -18,6 +19,10 @@ public class Caminhoes {
         capacidadeToneladas.put("pequeno", 1.0);
         capacidadeToneladas.put("medio", 4.0);
         capacidadeToneladas.put("grande", 10.0);
+    }
+
+    public String[] getTipoCaminhoes() {
+        return this.tipoCaminhoes;
     }
 
     public double getPrecoPorKm(String tipoCaminhao) {
