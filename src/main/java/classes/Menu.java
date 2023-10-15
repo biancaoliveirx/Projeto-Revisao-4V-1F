@@ -7,12 +7,14 @@ import java.util.Scanner;
 
 public class Menu {
     private Map<String, Integer> produtosList;
-    private Produtos produtos;
+    private Produtos produtos = new Produtos();
+    private Caminhoes caminhoes = new Caminhoes();
 
     // static é que só pertence a própria classe
     private static double custoTotal = 0;
     private static double custoMedioPorKm = 0;
     private static int numeroTotalVeiculosDeslocados = 0;
+    private List<Produtos> itensParaTransportar;
 
     public void listarNomesProdutos() {
         produtosList = new HashMap<>();
@@ -31,7 +33,7 @@ public class Menu {
         produtos = new Produtos();
     }
 
-    public void exibirMenu() {
+    public Object exibirMenu() {
         List<String> nomesProdutos = produtos.getNomesProdutos();
 
         System.out.println("Nomes dos produtos disponíveis:");
@@ -128,5 +130,17 @@ public class Menu {
     public void atualizarCustoMedioKm() {
         custoMedioPorKm = custoTotal / numeroTotalVeiculosDeslocados;
         System.out.println(custoMedioPorKm);
+    }
+    public void adicionarItensParaTransportar(int quantidade){
+        //
+        double peso = this.produtos.getPesoProduto("") * quantidade;
+        if(peso <= caminhoes.getCapacidadeMaximaTonelada("")){
+            for (int i = 0; i < quantidade; i++){
+                itensParaTransportar.add(produtos);
+            }
+            System.out.println("Produto(s) adicionado(s): " + quantidade + " : " + this.produtos.getNomesProdutos());
+        } else {
+            System.out.println("Capacidade máxima alcançada.");
+        }
     }
 }

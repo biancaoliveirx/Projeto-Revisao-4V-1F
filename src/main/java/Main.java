@@ -7,9 +7,9 @@ public class Main {
     public static void main(String[] args) {
 
         Menu menu = new Menu();
-//        menu.exibirMenu();
+        menu.exibirMenu();
 
-        Distancia distancia = new Distancia();
+//        Distancia distancia = new Distancia();
 
         //System.out.println(distancia.calculaDistancia("CAMPO GRANDE", "RIO DE JANEIRO"));
 
@@ -20,8 +20,8 @@ public class Main {
 //        System.out.println(caminhoes.getCapacidadeMaximaTonelada("a"));
 
 
-        menu.atualizarCustoTotal(8);
-        menu.atualizarCustoMedioKm();
+//        menu.atualizarCustoTotal(8);
+//        menu.atualizarCustoMedioKm();
 
     }
 }
