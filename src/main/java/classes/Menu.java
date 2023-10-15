@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Menu extends Caminhoes {
+    private Distancia distancias = new Distancia();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
 
@@ -14,6 +15,24 @@ public class Menu extends Caminhoes {
 
     private static double custoMedioPorProduto = 0;
     private static double custoTotalPorModalidadeDeTransporte = 0;
+
+    private static double custoTotal = 0;
+    private static double custoMedioPorKm = 0;
+    private static int numeroTotalVeiculosDeslocados = 0;
+
+    private static Map<String, Integer> totalDeCadaTipoDeItemTransportado = new HashMap<String, Integer>();
+    private static int totalDeItensTransportados = 0;
+
+    private static int numeroTotalDeVeiculosDeslocados = 0;
+
+    public Menu() { //construtor
+        produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
+        produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
+        transportes = new ArrayList<>();
+        this.listarCidades();
+        System.out.println(" ");
+        this.listarModaldidadesDeCaminhao();
+    }
 
     public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
@@ -27,15 +46,8 @@ public class Menu extends Caminhoes {
         }
     }
 
-    public Menu() { //construtor
-        produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
-        produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
-        transportes = new ArrayList<>();
-    }
-
     public void exibirMenu() { //responsável por exibir o menu principal e interagir com o usuário
 
-        listaCidades();
         listarNomesProdutos();
 
         Scanner scanner = new Scanner(System.in);
@@ -120,6 +132,66 @@ public class Menu extends Caminhoes {
         } else {
             System.out.println("Produto não encontrado na lista.");
         }
+    }
+
+    private void listarCidades() {
+        // Listando as cidades quando a classe Menu é instânciada
+        System.out.println("Cidades:");
+        for (int i = 0; i < distancias.getCidades().length; i++){
+            if(i > 0 && i % 3 == 0) {
+                System.out.println(" ");
+            }
+            System.out.print(distancias.getCidades()[i] + "  -  ");
+        }
+    }
+
+    private void listarModaldidadesDeCaminhao(){
+        // Listando as modalidades de caminhão quando a classe Menu é instânciada
+        System.out.println("Modalidades de caminhão:\n" +
+                "Pequeno [1 tonelada] -  Médio [4 toneladas] -  Grande [10 toneladas]");
+
+    }
+
+    public void atualizarCustoTotal(double valor) {
+        // soma o custo total com o valor
+        custoTotal += valor;
+        System.out.println(custoTotal);
+    }
+
+    public void atualizarCustoMedioKm() {
+        custoMedioPorKm = custoTotal / numeroTotalVeiculosDeslocados;
+        System.out.println(custoMedioPorKm);
+    }
+
+    public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens){
+
+        // verifica esse item já foi inserido na lista de item específico transportado
+        if(totalDeCadaTipoDeItemTransportado.containsKey(produto)){
+
+            // percorre a lista de item específico transportado
+            for (Map.Entry<String, Integer> item: totalDeCadaTipoDeItemTransportado.entrySet()){
+
+                // comparar a chave da lista com o nome do produto
+                if (item.getKey().equalsIgnoreCase(produto)){
+                    int novaQuantidade = item.getValue() + quantidadeDeItens;
+
+                    // atualiza a quantidade do item específico transportado
+                    totalDeCadaTipoDeItemTransportado.put(produto, novaQuantidade);
+                }
+            }
+        } else {
+            // se o item não está na lista
+
+            // adiciona o item na lista de Item Transportado e a quantidade
+            totalDeCadaTipoDeItemTransportado.put(produto, quantidadeDeItens);
+        }
+
+        // atualiza a lista total de itens transportados
+        totalDeItensTransportados += quantidadeDeItens;
+    }
+
+    private void atualizarNumeroTotalDeVeiculosDeslocados(int quantidadeDeVeiculos){
+        numeroTotalDeVeiculosDeslocados += quantidadeDeVeiculos;
     }
 
     public void consultarTrechoModalidade() {}
