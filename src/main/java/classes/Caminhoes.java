@@ -8,7 +8,7 @@ public class Caminhoes {
     private Map<String, Double> precoPorKm = new HashMap<>();
 
     public Caminhoes() {
-        // Inicialize os preços por quilômetro para cada tipo de caminhão
+        // Inicialize os preços por km para cada tipo de caminhão
         precoPorKm.put("pequeno", 5.83);
         precoPorKm.put("medio", 13.42);
         precoPorKm.put("grande", 29.21);
