@@ -1,15 +1,20 @@
 package classes;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Menu {
-
+public class Menu extends Caminhoes {
     private Distancia distancias = new Distancia();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
+
+    private List<Transporte> transportes;
+
+    private static double custoMedioPorProduto = 0;
+    private static double custoTotalPorModalidadeDeTransporte = 0;
 
     private static double custoTotal = 0;
     private static double custoMedioPorKm = 0;
@@ -23,7 +28,7 @@ public class Menu {
     public Menu() { //construtor
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
         produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
-
+        transportes = new ArrayList<>();
         this.listarCidades();
         System.out.println(" ");
         this.listarModaldidadesDeCaminhao();
@@ -94,7 +99,9 @@ public class Menu {
 
             if (quantidade > 0) {
                 produtosList.put(nomeProduto, quantidade);
-                System.out.println("Produto adicionado à lista: " + nomeProduto + "\nQuantidade: " + quantidade);
+//                double custoTransporte = calcularCustoTransporte(tipoCaminhao, distancia);
+//                transportes.add(new Transporte(tipoCaminhao, custoTransporte));
+                System.out.println("Produto adicionado à lista: " +nomeProduto+ "\nQuantidade: " +quantidade);
             } else {
                 System.out.println("A quantidade deve ser maior que zero.");
             }
@@ -220,3 +227,13 @@ public class Menu {
     }
 }
 
+    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
+        double custoTotal = 0;
+        for (Transporte transporte : transportes) {
+            if (transporte.getTipoCaminhao().equals(tipoCaminhao)) {
+                custoTotal += transporte.getCusto();
+            }
+        }
+        System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
+    }
+}
