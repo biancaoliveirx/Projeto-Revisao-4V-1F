@@ -44,4 +44,10 @@ public class Distancia {
             return 0;
         }
     }
+
+    public void listaCidades() {
+        for (String i : cidadeIndex.keySet()) {
+            System.out.println("Cidades para transporte: " + i);
+        }
+    }
 }

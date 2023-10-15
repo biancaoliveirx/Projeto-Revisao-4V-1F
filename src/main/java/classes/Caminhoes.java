@@ -1,6 +1,6 @@
 package classes;
 
-public class Caminhoes {
+public class Caminhoes extends Distancia {
 
     private double[] precoPorKm = {5.83, 13.42, 29.21};
     private double[] capacidadeMaximaTonelada = {1, 4, 10};
@@ -53,4 +53,3 @@ public class Caminhoes {
     }
 
 }
-
