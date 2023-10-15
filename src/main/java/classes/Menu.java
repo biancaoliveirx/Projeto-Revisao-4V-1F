@@ -87,8 +87,8 @@ public class Menu extends Caminhoes {
 
             if (quantidade > 0) {
                 produtosList.put(nomeProduto, quantidade);
-                double custoTransporte = calcularCustoTransporte(tipoCaminhao, distancia);
-                transportes.add(new Transporte(tipoCaminhao, custoTransporte));
+//                double custoTransporte = calcularCustoTransporte(tipoCaminhao, distancia);
+//                transportes.add(new Transporte(tipoCaminhao, custoTransporte));
                 System.out.println("Produto adicionado à lista: " +nomeProduto+ "\nQuantidade: " +quantidade);
             } else {
                 System.out.println("A quantidade deve ser maior que zero.");
