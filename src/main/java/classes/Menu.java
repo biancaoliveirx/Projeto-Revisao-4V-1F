@@ -6,45 +6,52 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Menu {
-    private Map<String, Integer> produtosList;
-    private Produtos produtos = new Produtos();
     private Caminhoes caminhoes = new Caminhoes();
 
-    // static é que só pertence a própria classe
+    private Distancia distancias = new Distancia();
+    private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
+    private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
+
     private static double custoTotal = 0;
     private static double custoMedioPorKm = 0;
     private static int numeroTotalVeiculosDeslocados = 0;
     private List<Produtos> itensParaTransportar;
 
-    public void listarNomesProdutos() {
-        produtosList = new HashMap<>();
-        produtos = new Produtos();
-        List<String> nomesProdutos = produtos.getNomesProdutos();
+    private static Map<String, Integer> totalDeCadaTipoDeItemTransportado = new HashMap<String, Integer>();
+    private static int totalDeItensTransportados = 0;
+
+    private static int numeroTotalDeVeiculosDeslocados = 0;
+
+    public Menu() { //construtor
+        produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
+        produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
+
+        this.listarCidades();
+        System.out.println(" ");
+        this.listarModaldidadesDeCaminhao();
+    }
+
+    public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
+        produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
+        produtos = new Produtos(); //cria uma instância da classe Produtos
+        List<String> nomesProdutos = produtos.getNomesProdutos(); //obtém a lista de nomes de produtos chamando o método getNomesProdutos()
 
         System.out.println("Nomes dos produtos disponíveis:");
 
-        for (String nomeProduto : nomesProdutos) {
+        for (String nomeProduto : nomesProdutos) { //exibem os nomes dos produtos disponíveis no console
             System.out.println(nomeProduto);
         }
     }
 
-    public Menu() {
-        produtosList = new HashMap<>();
-        produtos = new Produtos();
-    }
+    public void exibirMenu() { //responsável por exibir o menu principal e interagir com o usuário
 
-    public Object exibirMenu() {
-        List<String> nomesProdutos = produtos.getNomesProdutos();
-
-        System.out.println("Nomes dos produtos disponíveis:");
-
-        for (String nomeProduto : nomesProdutos) {
-            System.out.println(nomeProduto);
-        }
+        listarNomesProdutos();
 
         Scanner scanner = new Scanner(System.in);
 
-        while (true) {
+        while (true) { //inicia um loop infinito para exibir o menu e aguardar a entrada do usuário
+
+            //exibe as opções do menu no console
             System.out.println("\nMenu:");
             System.out.println("1. Adicionar produto à lista");
             System.out.println("2. Exibir produtos da lista");
@@ -54,6 +61,7 @@ public class Menu {
 
             int opcao = scanner.nextInt();
 
+            //usa um bloco switch para determinar qual ação executar com base na opção escolhida
             switch (opcao) {
                 case 1:
                     adicionarProduto();
@@ -121,6 +129,24 @@ public class Menu {
         }
     }
 
+    private void listarCidades() {
+        // Listando as cidades quando a classe Menu é instânciada
+        System.out.println("Cidades:");
+        for (int i = 0; i < distancias.getCidades().length; i++){
+            if(i > 0 && i % 3 == 0) {
+                System.out.println(" ");
+            }
+            System.out.print(distancias.getCidades()[i] + "  -  ");
+        }
+    }
+
+    private void listarModaldidadesDeCaminhao(){
+        // Listando as modalidades de caminhão quando a classe Menu é instânciada
+        System.out.println("Modalidades de caminhão:\n" +
+                "Pequeno [1 tonelada] -  Médio [4 toneladas] -  Grande [10 toneladas]");
+
+    }
+
     public void atualizarCustoTotal(double valor) {
         // soma o custo total com o valor
         custoTotal += valor;
@@ -143,4 +169,40 @@ public class Menu {
             System.out.println("Capacidade máxima alcançada.");
         }
     }
+
+    public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens){
+
+        // verifica esse item já foi inserido na lista de item específico transportado
+        if(totalDeCadaTipoDeItemTransportado.containsKey(produto)){
+
+            // percorre a lista de item específico transportado
+            for (Map.Entry<String, Integer> item: totalDeCadaTipoDeItemTransportado.entrySet()){
+
+                // comparar a chave da lista com o nome do produto
+                if (item.getKey().equalsIgnoreCase(produto)){
+                    int novaQuantidade = item.getValue() + quantidadeDeItens;
+
+                    // atualiza a quantidade do item específico transportado
+                    totalDeCadaTipoDeItemTransportado.put(produto, novaQuantidade);
+                }
+            }
+        } else {
+            // se o item não está na lista
+
+            // adiciona o item na lista de Item Transportado e a quantidade
+            totalDeCadaTipoDeItemTransportado.put(produto, quantidadeDeItens);
+        }
+
+        // atualiza a lista total de itens transportados
+        totalDeItensTransportados += quantidadeDeItens;
+    }
+
+    private void atualizarNumeroTotalDeVeiculosDeslocados(int quantidadeDeVeiculos){
+        numeroTotalDeVeiculosDeslocados += quantidadeDeVeiculos;
+    }
+
+    public void consultarTrechoModalidade() {}
+    public void cadastrarTransportes() {}
+    public void relatorioTransportesCadastrados() {}
 }
+
