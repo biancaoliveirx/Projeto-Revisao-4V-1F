@@ -225,7 +225,6 @@ public class Menu extends Caminhoes {
         System.out.println("Modalidade de caminhão escolhido: " +tipoCaminhao);
         System.out.println("Custo da viagem: R$" +custoTransporte);
     }
-}
 
     public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
         double custoTotal = 0;
