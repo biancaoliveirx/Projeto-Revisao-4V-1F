@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class Menu extends Caminhoes {
     private Distancia distancias = new Distancia();
+    private Caminhoes caminhoes = new Caminhoes();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
 
@@ -21,6 +22,7 @@ public class Menu extends Caminhoes {
     private static int numeroTotalVeiculosDeslocados = 0;
 
     private static Map<String, Integer> totalDeCadaTipoDeItemTransportado = new HashMap<String, Integer>();
+    private static Map<String, Double> totalDeCustoPorModalidadeDeTransporte = new HashMap<String, Double>();
     private static int totalDeItensTransportados = 0;
 
     private static int numeroTotalDeVeiculosDeslocados = 0;
@@ -48,44 +50,50 @@ public class Menu extends Caminhoes {
 
     public void exibirMenu() { //responsável por exibir o menu principal e interagir com o usuário
 
+        listarCidades();
+        listarModaldidadesDeCaminhao();
         listarNomesProdutos();
 
-        Scanner scanner = new Scanner(System.in);
+//        Scanner scanner = new Scanner(System.in);
 
-        while (true) { //inicia um loop infinito para exibir o menu e aguardar a entrada do usuário
+//        while (true) { //inicia um loop infinito para exibir o menu e aguardar a entrada do usuário
+//
+//            //exibe as opções do menu no console
+//            System.out.println("\nMenu:");
+//            System.out.println("1. Adicionar produto à lista");
+//            System.out.println("2. Exibir produtos da lista");
+//            System.out.println("3. Excluir produto da lista");
+//            System.out.println("4. Exibir lista dos produtos disponíveis");
+//            System.out.println("5. Sair");
+//
+//            int opcao = scanner.nextInt();
+//
+//            //usa um bloco switch para determinar qual ação executar com base na opção escolhida
+//            switch (opcao) {
+//                case 1:
+//                    adicionarProduto();
+//                    break;
+//                case 2:
+//                    listarProdutos();
+//                    break;
+//                case 3:
+//                    excluirProduto();
+//                    break;
+//                case 4:
+//                    listarNomesProdutos();
+//                    break;
+//                case 5:
+//                    System.out.println("Encerrando o programa.");
+//                    scanner.close();
+//                    System.exit(0);
+//                default:
+//                    System.out.println("Essa opção não existe no menu! Digite uma opção válida.");
+//            }
+//        }
+    }
 
-            //exibe as opções do menu no console
-            System.out.println("\nMenu:");
-            System.out.println("1. Adicionar produto à lista");
-            System.out.println("2. Exibir produtos da lista");
-            System.out.println("3. Excluir produto da lista");
-            System.out.println("4. Exibir lista dos produtos disponíveis");
-            System.out.println("5. Sair");
+    public void consultarTrechoPorModalidade() {
 
-            int opcao = scanner.nextInt();
-
-            //usa um bloco switch para determinar qual ação executar com base na opção escolhida
-            switch (opcao) {
-                case 1:
-                    adicionarProduto();
-                    break;
-                case 2:
-                    listarProdutos();
-                    break;
-                case 3:
-                    excluirProduto();
-                    break;
-                case 4:
-                    listarNomesProdutos();
-                    break;
-                case 5:
-                    System.out.println("Encerrando o programa.");
-                    scanner.close();
-                    System.exit(0);
-                default:
-                    System.out.println("Essa opção não existe no menu! Digite uma opção válida.");
-            }
-        }
     }
 
     public void adicionarProduto() {
@@ -198,13 +206,27 @@ public class Menu extends Caminhoes {
     public void cadastrarTransportes() {}
     public void relatorioTransportesCadastrados() {}
 
-    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
-        double custoTotal = 0;
-        for (Transporte transporte : transportes) {
-            if (transporte.getTipoCaminhao().equals(tipoCaminhao)) {
-                custoTotal += transporte.getCusto();
+//    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
+//        double custoTotal = 0;
+//        for (Transporte transporte : transportes) {
+//            if (transporte.getTipoCaminhao().equals(tipoCaminhao)) {
+//                custoTotal += transporte.getCusto();
+//            }
+//        }
+//        System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
+//    }
+
+    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao, int quantidade) {
+        if (totalDeCustoPorModalidadeDeTransporte.containsKey(tipoCaminhao)) {
+            for (Map.Entry<String, Double> tipo : totalDeCustoPorModalidadeDeTransporte.entrySet()) {
+                if (tipo.getKey().equalsIgnoreCase(tipoCaminhao)) {
+                    double novoValor = tipo.getValue() + (quantidade * caminhoes.getPrecoPorKm(tipoCaminhao));
+                    totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, novoValor);
+                }
             }
+        } else {
+            double valor = quantidade * caminhoes.getPrecoPorKm(tipoCaminhao);
+            totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, valor);
         }
-        System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
     }
 }
