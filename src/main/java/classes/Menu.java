@@ -23,6 +23,7 @@ public class Menu extends Caminhoes {
 
     private static int numeroTotalDeVeiculosDeslocados = 0;
     private static  HashMap<String,HashMap<String, Double>> custoPorTrecho = new HashMap<String,HashMap<String, Double>>();
+    private static HashMap<String, Double> custoTotalPorTrecho = new HashMap<String, Double>();
 
     public Menu() { //construtor
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
@@ -199,7 +200,7 @@ public class Menu extends Caminhoes {
         numeroTotalDeVeiculosDeslocados += quantidadeDeVeiculos;
     }
 
-    public void atualizarCustoPorTrecho(String cidade1, String cidade2, String tipoCaminhao, double custo) {
+    private void atualizarCustoPorTrecho(String cidade1, String cidade2, String tipoCaminhao, double custo) {
         String trecho;
         if (cidade1.compareTo(cidade2) < 0) {
            trecho = cidade1 + "-" + cidade2;
@@ -214,18 +215,28 @@ public class Menu extends Caminhoes {
 
                 if (trechos.containsKey(trecho)) {
                     trechos.put(trecho, trechos.get(trecho) + custo);
+                    atualizarCustoTotalPorTrecho(trecho, custo);
                 } else {
                     trechos.put(trecho, custo);
+                    atualizarCustoTotalPorTrecho(trecho, custo);
                 }
             } else {
                 HashMap<String, Double> trechoValor = new HashMap<>();
                 trechoValor.put(trecho, custo);
                 custoPorTrecho.put(tipoCaminhao, trechoValor);
+                atualizarCustoTotalPorTrecho(trecho, custo);
             }
-
-
-
     }
+
+        private void atualizarCustoTotalPorTrecho (String trecho, double custo) {
+
+            if (custoTotalPorTrecho.containsKey(trecho)) {
+                custoTotalPorTrecho.put(trecho, custoTotalPorTrecho.get(trecho) + custo);
+            } else {
+                custoTotalPorTrecho.put(trecho, custo);
+            }
+        }
+
         public void consultarTrechoModalidade () {
         }
 
