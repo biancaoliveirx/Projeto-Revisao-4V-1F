@@ -54,7 +54,6 @@ public class Main {
                          System.exit(0);
                          default:
                              System.out.println("Essa opção não existe");
-
              }
         }
     }
