@@ -187,8 +187,36 @@ public class Menu {
         numeroTotalDeVeiculosDeslocados += quantidadeDeVeiculos;
     }
 
+
+    //==================================================================================================================
+
+
     public void consultarTrechoModalidade() {}
     public void cadastrarTransportes() {}
     public void relatorioTransportesCadastrados() {}
+
+
+    //==================================================================================================================
+
+
+
+    //método para calcular o valor da viagem de uma cidade para a outra
+    public void calculaValorDaViagem(String cidadeOrigem, String cidadeDestino, String tipoCaminhao) {
+        Distancia distancia = new Distancia(); //instância a classe Distancia para calcular a distância entre cidades
+
+        int distanciaKm = distancia.calcularDistanciaEntreCidades(cidadeOrigem, cidadeDestino);
+        if (distanciaKm <= 0) { //verifica se distância > 0
+            System.out.println("As cidades " +cidadeOrigem+ " e " +cidadeDestino+ " estão na mesma localização ou a distância não foi encontrada na nossa base de dados.");
+            return;
+        }
+
+        Caminhoes caminhoes = new Caminhoes(); //instância a classe Caminhoes para saber o preço por km da modalidade de caminhão selecionada
+        double precoPorKm = caminhoes.getPrecoPorKm(tipoCaminhao);
+        double custoTransporte = distanciaKm * precoPorKm;
+
+        System.out.println("A distância entre " +cidadeOrigem+ " e " +cidadeDestino+ ": " +distanciaKm+ " km");
+        System.out.println("Modalidade de caminhão escolhido: " +tipoCaminhao);
+        System.out.println("Custo da viagem: R$" +custoTransporte);
+    }
 }
 
