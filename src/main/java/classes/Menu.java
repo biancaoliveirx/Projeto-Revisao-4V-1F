@@ -11,7 +11,6 @@ public class Menu extends Caminhoes {
 
     private List<Transporte> transportes;
 
-    private static double custoMedioPorProduto = 0;
     private static double custoTotalPorModalidadeDeTransporte = 0;
 
     private static double custoTotal = 0;
@@ -24,8 +23,10 @@ public class Menu extends Caminhoes {
     private static int totalDeItensTransportados = 0;
 
     private static int numeroTotalDeVeiculosDeslocados = 0;
-    private static  HashMap<String,HashMap<String, Double>> custoPorTrecho = new HashMap<String,HashMap<String, Double>>();
+    private static HashMap<String, HashMap<String, Double>> custoPorTrecho = new HashMap<String, HashMap<String, Double>>();
     private static HashMap<String, Double> custoTotalPorTrecho = new HashMap<String, Double>();
+
+    private static Map<String, Double> custoTotalPorProduto = new HashMap<String, Double>();
 
     public Menu() { //construtor
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
@@ -217,48 +218,48 @@ public class Menu extends Caminhoes {
     private void atualizarCustoPorTrecho(String cidade1, String cidade2, String tipoCaminhao, double custo) {
         String trecho;
         if (cidade1.compareTo(cidade2) < 0) {
-           trecho = cidade1 + "-" + cidade2;
+            trecho = cidade1 + "-" + cidade2;
         } else {
             trecho = cidade2 + "-" + cidade1;
         }
 
 
-            if (custoPorTrecho.containsKey(tipoCaminhao)) {
-                HashMap<String, Double> trechos = custoPorTrecho.get(tipoCaminhao);
+        if (custoPorTrecho.containsKey(tipoCaminhao)) {
+            HashMap<String, Double> trechos = custoPorTrecho.get(tipoCaminhao);
 
 
-                if (trechos.containsKey(trecho)) {
-                    trechos.put(trecho, trechos.get(trecho) + custo);
-                    atualizarCustoTotalPorTrecho(trecho, custo);
-                } else {
-                    trechos.put(trecho, custo);
-                    atualizarCustoTotalPorTrecho(trecho, custo);
-                }
+            if (trechos.containsKey(trecho)) {
+                trechos.put(trecho, trechos.get(trecho) + custo);
+                atualizarCustoTotalPorTrecho(trecho, custo);
             } else {
-                HashMap<String, Double> trechoValor = new HashMap<>();
-                trechoValor.put(trecho, custo);
-                custoPorTrecho.put(tipoCaminhao, trechoValor);
+                trechos.put(trecho, custo);
                 atualizarCustoTotalPorTrecho(trecho, custo);
             }
+        } else {
+            HashMap<String, Double> trechoValor = new HashMap<>();
+            trechoValor.put(trecho, custo);
+            custoPorTrecho.put(tipoCaminhao, trechoValor);
+            atualizarCustoTotalPorTrecho(trecho, custo);
+        }
     }
 
-        private void atualizarCustoTotalPorTrecho (String trecho, double custo) {
+    private void atualizarCustoTotalPorTrecho(String trecho, double custo) {
 
-            if (custoTotalPorTrecho.containsKey(trecho)) {
-                custoTotalPorTrecho.put(trecho, custoTotalPorTrecho.get(trecho) + custo);
-            } else {
-                custoTotalPorTrecho.put(trecho, custo);
-            }
+        if (custoTotalPorTrecho.containsKey(trecho)) {
+            custoTotalPorTrecho.put(trecho, custoTotalPorTrecho.get(trecho) + custo);
+        } else {
+            custoTotalPorTrecho.put(trecho, custo);
         }
+    }
 
-        public void consultarTrechoModalidade () {
-        }
+    public void consultarTrechoModalidade() {
+    }
 
-        public void cadastrarTransportes () {
-        }
+    public void cadastrarTransportes() {
+    }
 
-        public void relatorioTransportesCadastrados () {
-        }
+    public void relatorioTransportesCadastrados() {
+    }
 
 //    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
 //        double custoTotal = 0;
@@ -270,79 +271,108 @@ public class Menu extends Caminhoes {
 //        System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
 //    }
 
-        public void atualizarCustoTotalPorModalidadeDeTransporte (String tipoCaminhao,int quantidade){
-            if (totalDeCustoPorModalidadeDeTransporte.containsKey(tipoCaminhao)) {
-                for (Map.Entry<String, Double> tipo : totalDeCustoPorModalidadeDeTransporte.entrySet()) {
-                    if (tipo.getKey().equalsIgnoreCase(tipoCaminhao)) {
-                        double novoValor = tipo.getValue() + (quantidade * caminhoes.getPrecoPorKm(tipoCaminhao));
-                        totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, novoValor);
-                    }
-                }
-            } else {
-                double valor = quantidade * caminhoes.getPrecoPorKm(tipoCaminhao);
-                totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, valor);
-            }
-        }
-
-        //método para calcular o valor da viagem de uma cidade para a outra
-        public void calculaValorDaViagem (String cidadeOrigem, String cidadeDestino, String tipoCaminhao){
-            Distancia distancia = new Distancia(); //instância a classe Distancia para calcular a distância entre cidades
-
-            int distanciaKm = distancia.calcularDistanciaEntreCidades(cidadeOrigem, cidadeDestino);
-            if (distanciaKm <= 0) { //verifica se distância > 0
-                System.out.println("As cidades " + cidadeOrigem + " e " + cidadeDestino + " estão na mesma localização ou a distância não foi encontrada na nossa base de dados.");
-                return;
-            }
-
-            double precoPorKm = caminhoes.getPrecoPorKm(tipoCaminhao);
-            double custoTransporte = distanciaKm * precoPorKm;
-
-            System.out.println("A distância entre " + cidadeOrigem + " e " + cidadeDestino + ": " + distanciaKm + " km");
-            System.out.println("Modalidade de caminhão escolhido: " + tipoCaminhao);
-            System.out.println("Custo da viagem: R$" + custoTransporte);
-        }
-
-        public void atualizarCustoTotalPorModalidadeDeTransporte (String tipoCaminhao){
-            double custoTotal = 0;
-            for (Transporte transporte : transportes) {
-                if (transporte.getTipoCaminhao().equals(tipoCaminhao)) {
-                    custoTotal += transporte.getCusto();
+    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao, int quantidade) {
+        if (totalDeCustoPorModalidadeDeTransporte.containsKey(tipoCaminhao)) {
+            for (Map.Entry<String, Double> tipo : totalDeCustoPorModalidadeDeTransporte.entrySet()) {
+                if (tipo.getKey().equalsIgnoreCase(tipoCaminhao)) {
+                    double novoValor = tipo.getValue() + (quantidade * caminhoes.getPrecoPorKm(tipoCaminhao));
+                    totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, novoValor);
                 }
             }
-            System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
-        }
-
-        public void solicitarCidadesETransportes () {
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.print("Digite a cidade de origem: "); //pede cidade de origem
-            try {
-                String cidadeOrigem = scanner.nextLine();
-                if (cidadeOrigem.isEmpty()) {
-                    throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
-                }
-                if (!Arrays.asList(distancias.getCidades()).contains(cidadeOrigem.toUpperCase())) {
-                    throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
-                }
-                System.out.print("Digite a cidade de destino: "); //pede cidade de destino
-                String cidadeDestino = scanner.nextLine();
-                if (cidadeDestino.isEmpty()) {
-                    throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
-                }
-                if (!Arrays.asList(distancias.getCidades()).contains(cidadeDestino.toUpperCase())) {
-                    throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
-                }
-                System.out.print("Escolha o tipo de caminhão (pequeno, medio, grande): "); //pede o tipo de caminhão
-                String tipoCaminhao = scanner.nextLine();
-                if (tipoCaminhao.isEmpty()) {
-                    throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
-                }
-                if (!Arrays.asList(caminhoes.getTipoCaminhoes()).contains(tipoCaminhao.toLowerCase())) {
-                    throw new IllegalArgumentException("O tipo de caminhão escolhido não existe na nossa base de dados!");
-                }
-            } catch (IllegalArgumentException | InputMismatchException exception) {
-                System.out.println(exception.getMessage());
-            }
-
+        } else {
+            double valor = quantidade * caminhoes.getPrecoPorKm(tipoCaminhao);
+            totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, valor);
         }
     }
+
+    //método para calcular o valor da viagem de uma cidade para a outra
+    public void calculaValorDaViagem(String cidadeOrigem, String cidadeDestino, String tipoCaminhao) {
+        Distancia distancia = new Distancia(); //instância a classe Distancia para calcular a distância entre cidades
+
+        int distanciaKm = distancia.calcularDistanciaEntreCidades(cidadeOrigem, cidadeDestino);
+        if (distanciaKm <= 0) { //verifica se distância > 0
+            System.out.println("As cidades " + cidadeOrigem + " e " + cidadeDestino + " estão na mesma localização ou a distância não foi encontrada na nossa base de dados.");
+            return;
+        }
+
+        double precoPorKm = caminhoes.getPrecoPorKm(tipoCaminhao);
+        double custoTransporte = distanciaKm * precoPorKm;
+
+        System.out.println("A distância entre " + cidadeOrigem + " e " + cidadeDestino + ": " + distanciaKm + " km");
+        System.out.println("Modalidade de caminhão escolhido: " + tipoCaminhao);
+        System.out.println("Custo da viagem: R$" + custoTransporte);
+    }
+
+    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
+        double custoTotal = 0;
+        for (Transporte transporte : transportes) {
+            if (transporte.getTipoCaminhao().equals(tipoCaminhao)) {
+                custoTotal += transporte.getCusto();
+            }
+        }
+        System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
+    }
+
+    public void solicitarCidadesETransportes() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Digite a cidade de origem: "); //pede cidade de origem
+        try {
+            String cidadeOrigem = scanner.nextLine();
+            if (cidadeOrigem.isEmpty()) {
+                throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
+            }
+            if (!Arrays.asList(distancias.getCidades()).contains(cidadeOrigem.toUpperCase())) {
+                throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
+            }
+            System.out.print("Digite a cidade de destino: "); //pede cidade de destino
+            String cidadeDestino = scanner.nextLine();
+            if (cidadeDestino.isEmpty()) {
+                throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
+            }
+            if (!Arrays.asList(distancias.getCidades()).contains(cidadeDestino.toUpperCase())) {
+                throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
+            }
+            System.out.print("Escolha o tipo de caminhão (pequeno, medio, grande): "); //pede o tipo de caminhão
+            String tipoCaminhao = scanner.nextLine();
+            if (tipoCaminhao.isEmpty()) {
+                throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
+            }
+            if (!Arrays.asList(caminhoes.getTipoCaminhoes()).contains(tipoCaminhao.toLowerCase())) {
+                throw new IllegalArgumentException("O tipo de caminhão escolhido não existe na nossa base de dados!");
+            }
+        } catch (IllegalArgumentException | InputMismatchException exception) {
+            System.out.println(exception.getMessage());
+        }
+
+    }
+
+    // essa lista armazena o custo total por produto, todas as vezes que ele foi cadastrado
+    private void atualizarCustoTotalPorProduto(String produto, double pesoProduto, double custoTotal, double pesoTotalProduto) {
+        double porcentagem = (100 * pesoProduto) / pesoTotalProduto;
+        double custoProduto = (porcentagem * custoTotal) / 100;
+        // verifica se o produto ja está na lista
+        if (custoTotalPorProduto.containsKey(produto)) {
+            // se ele ta na lista vai aumentar o valor do produto
+            // faz o valor total dos produtos
+            custoTotalPorProduto.put(produto, custoTotalPorProduto.get(produto) + custoProduto);
+            System.out.println(produto + " - " + custoTotalPorProduto.get(produto));
+
+        } else {
+            // se nao ta na lista
+            // ele adiciona o novo produto na lista com o novo valor total
+            custoTotalPorProduto.put(produto, custoProduto);
+            System.out.println(produto + " - " + custoTotalPorProduto.get(produto));
+        }
+    }
+    private HashMap<String, Double> calculaValorMedioProduto(){
+        HashMap<String, Double> valorMedioProduto = new HashMap<String, Double>();
+        for (Map.Entry<String, Integer> produto: totalDeCadaTipoDeItemTransportado.entrySet()){
+            // primeiro pega o valor total do produto e depois divide pela quantidade de produto que já foi cadastrado
+            double valorMedio = custoTotalPorProduto.get(produto.getKey()) / produto.getValue();
+            valorMedioProduto.put(produto.getKey(), valorMedio);
+        }
+        // retorna um hashmap com todos os valores médios dos produtos
+        return valorMedioProduto;
+    }
+}
