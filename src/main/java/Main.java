@@ -13,7 +13,7 @@ public class Main {
          while (true) {  // inicia um loop para exibir o menu e aguardar a entrada do usuário
              // exibe as opções do menu no console
              System.out.println("\nMenu Principal:");
-             System.out.println("1. Exibir Menu de Produtos");
+             System.out.println("1. Exibir Cidades, Caminhões e Produtos");
              System.out.println("2. Consultar Trecho Modalidade");
              System.out.println("3. Cadastrar Transportes");
              System.out.println("4. Relatório Transportes Cadastrados");
