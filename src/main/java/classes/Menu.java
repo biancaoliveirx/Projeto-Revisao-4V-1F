@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Menu extends Caminhoes {
+
+    Scanner leitor = new Scanner(System.in);
+
     private Distancia distancias = new Distancia();
     private Caminhoes caminhoes = new Caminhoes();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
@@ -31,9 +34,9 @@ public class Menu extends Caminhoes {
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
         produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
         transportes = new ArrayList<>();
-        this.listarCidades();
+//        this.listarCidades();
         System.out.println(" ");
-        this.listarModaldidadesDeCaminhao();
+//        this.listarModaldidadesDeCaminhao();
     }
 
     public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
@@ -202,10 +205,6 @@ public class Menu extends Caminhoes {
         numeroTotalDeVeiculosDeslocados += quantidadeDeVeiculos;
     }
 
-
-    //==================================================================================================================
-
-
     public void consultarTrechoModalidade() {
     }
 
@@ -256,4 +255,23 @@ public class Menu extends Caminhoes {
         System.out.println("Modalidade de caminhão escolhido: " + tipoCaminhao);
         System.out.println("Custo da viagem: R$" + custoTransporte);
     }
+
+//    public void consultarTrechosEModalidades() {
+//        System.out.println("\nTrechos disponíveis para transporte: ");
+//        listarCidades();
+//
+//        System.out.println("\nTipos de caminhões disponiveis para transporte: ");
+//        listarModaldidadesDeCaminhao();
+//
+//        System.out.println("Digite a cidade de origem: ");
+//        String cidadeOrigem = leitor.nextLine();
+//
+//        System.out.println("Digite a cidade de destino: ");
+//        String cidadeDestino = leitor.nextLine();
+//
+//        System.out.println("Digite o tipo de caminhão: ");
+//        String tipoCaminhao = leitor.nextLine();
+//
+//        calculaValorDaViagem(cidadeOrigem.toUpperCase(), cidadeDestino.toUpperCase(), tipoCaminhao.toLowerCase());
+//    }
 }
