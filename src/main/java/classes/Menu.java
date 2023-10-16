@@ -157,18 +157,18 @@ public class Menu {
         custoMedioPorKm = custoTotal / numeroTotalVeiculosDeslocados;
         System.out.println(custoMedioPorKm);
     }
-    public void adicionarItensParaTransportar(int quantidade){
-        //
-        double peso = this.produtos.getPesoProduto("") * quantidade;
-        if(peso <= caminhoes.getCapacidadeMaximaTonelada("")){
-            for (int i = 0; i < quantidade; i++){
-                itensParaTransportar.add(produtos);
-            }
-            System.out.println("Produto(s) adicionado(s): " + quantidade + " : " + this.produtos.getNomesProdutos());
-        } else {
-            System.out.println("Capacidade máxima alcançada.");
-        }
-    }
+//    public void adicionarItensParaTransportar(int quantidade){
+//        //
+//        double peso = this.produtos.getPesoProduto("") * quantidade;
+//        if(peso <= caminhoes.getCapacidadeMaximaTonelada("")){
+//            for (int i = 0; i < quantidade; i++){
+//                itensParaTransportar.add(produtos);
+//            }
+//            System.out.println("Produto(s) adicionado(s): " + quantidade + " : " + this.produtos.getNomesProdutos());
+//        } else {
+//            System.out.println("Capacidade máxima alcançada.");
+//        }
+//    }
 
     public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens){
 
