@@ -11,7 +11,8 @@ public class Menu{
     private Distancia distancias = new Distancia();
     private Caminhoes caminhoes = new Caminhoes();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
-    private Map<String, Double> pesoPorQuantidadeProduto;
+    private static Map<String, Double> pesoPorQuantidadeProduto = new HashMap<String, Double>();
+    ;
 
     private HashMap<String, HashMap<String, Integer>> produtosDescarregados = new HashMap<String, HashMap<String, Integer>>();
 
@@ -344,9 +345,11 @@ public class Menu{
 
     // essa lista armazena o custo total por produto, todas as vezes que ele foi cadastrado
     private void atualizarCustoTotalPorProduto(double custoTotal, double pesoTotalProduto) {
-        for (Map.Entry<String, Double> produto : this.pesoPorQuantidadeProduto.entrySet()) {
-            double porcentagem = (100 * produto.getValue()) / pesoTotalProduto;
-            double custoProduto = (porcentagem * custoTotal) / 100;
+        for (Map.Entry<String, Double> produto : pesoPorQuantidadeProduto.entrySet()) {
+            double porcentagem = (100 * produto.getValue()) / pesoTotalProduto * 10000;
+            System.out.println(porcentagem);
+            double custoProduto = (porcentagem * custoTotal) * 1000;
+            System.out.println(custoProduto);
             // verifica se o produto ja está na lista
             if (custoTotalPorProduto.containsKey(produto.getKey())) {
                 // se ele ta na lista vai aumentar o valor do produto
@@ -499,7 +502,6 @@ public class Menu{
     private double calculaCustoESelecionaMelhoModalidade() {
 
         // calculando peso dos produtos e peso total
-        this.pesoPorQuantidadeProduto = new HashMap<String, Double>();
         double pesoTotal = 0;
         for (Map.Entry<String, Integer> produto : this.produtosList.entrySet()) {
             double pesoProduto = produto.getValue() * this.produtos.getPesoProduto(produto.getKey()) * 0.001; // calcula peso do produto e converte para tonelada
