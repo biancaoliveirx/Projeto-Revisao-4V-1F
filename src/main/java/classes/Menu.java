@@ -44,6 +44,12 @@ public class Menu{
         System.out.println(" ");
     }
 
+    public void exibirMenu(){
+        listarCidades();
+        listarModaldidadesDeCaminhao();
+        listarNomesProdutos();
+    }
+
     public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
         produtos = new Produtos(); //cria uma instância da classe Produtos

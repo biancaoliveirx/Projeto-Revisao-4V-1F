@@ -8,7 +8,6 @@ public class Main {
 
     public static void main(String[] args) {
         Menu menu = new Menu();
-        //menu.adicionarCidades();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {  // inicia um loop para exibir o menu e aguardar a entrada do usuário
