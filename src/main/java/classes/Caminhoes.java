@@ -2,7 +2,6 @@ package classes;
 
 import java.util.HashMap;
 import java.util.Map;
-// utilizar enum
 public class Caminhoes {
 
     private Map<String, Double> precoPorKm = new HashMap<>();
