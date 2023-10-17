@@ -2,7 +2,6 @@ package classes;
 
 import java.util.HashMap;
 import java.util.Map;
-
 public class Caminhoes {
 
     private Map<String, Double> precoPorKm = new HashMap<>();

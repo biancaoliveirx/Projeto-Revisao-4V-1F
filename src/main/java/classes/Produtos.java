@@ -15,14 +15,14 @@ public class Produtos {
         produtos = new HashMap<>();
 
         // Adicina produtos e seus pesos correspondentes ao mapa.
-        produtos.put("Celular", 0.7);
-        produtos.put("Geladeira", 50.0);
-        produtos.put("Air Fryer", 3.5);
-        produtos.put("Cadeira", 5.0);
-        produtos.put("Luminária", 0.8);
-        produtos.put("Lavadora de roupa", 15.0);
-        produtos.put("PlayStation 5", 3.9);
-        produtos.put("Nintendo Switch", 0.3);
+        produtos.put("CELULAR", 0.7);
+        produtos.put("GELADEIRA", 50.0);
+        produtos.put("AIR FRYER", 3.5);
+        produtos.put("CADEIRA", 5.0);
+        produtos.put("LUMINARIA", 0.8);
+        produtos.put("LAVADORA DE ROUPA", 15.0);
+        produtos.put("PLAYSTATION 5", 3.9);
+        produtos.put("NINTENDO SWITCH", 0.3);
     }
 
     // Método que retorna o peso de um produto específico.
