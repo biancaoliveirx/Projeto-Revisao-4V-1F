@@ -232,6 +232,7 @@ public class Menu{
         numeroTotalDeVeiculosDeslocados += quantidadeDeVeiculos;
     }
 
+    // requisito dois.dois
     private void atualizarCustoPorTrecho(String cidade1, String cidade2, String tipoCaminhao, double custo) {
         String trecho;
         if (cidade1.compareTo(cidade2) < 0) {
@@ -372,6 +373,7 @@ public class Menu{
         return valorMedioProduto;
     }
 
+    // requisito um
     public void consultarTrechosEModalidades() {
         this.cidadeOrigem = null;
         this.cidadeDestino = null;
@@ -383,6 +385,7 @@ public class Menu{
         calculaValorDaViagem(this.cidadeOrigem.toUpperCase(), this.cidadeDestino.toUpperCase(), this.modalidadeCaminhao.toLowerCase());
     }
 
+    // requisito tres
     public boolean cadastrarTransportes() {
         this.cidadeOrigem = null;
         this.cidadeDestino = null;
@@ -592,6 +595,7 @@ public class Menu{
         } while (!fim);
     }
 
+    // requisito quatro
     public boolean relatorioTransportesCadastrados() {
         atualizarCustoMedioKm();
         System.out.println("Número total de veículos deslocados :" + numeroTotalDeVeiculosDeslocados);

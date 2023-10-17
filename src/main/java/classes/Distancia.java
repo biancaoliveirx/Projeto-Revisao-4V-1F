@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+// requisito dois.um
 public class Distancia {
     //mapa para mapear nomes de cidades a índices
     private final Map<String, Integer> cidadeIndex = new HashMap<>();
