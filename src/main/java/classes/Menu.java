@@ -430,7 +430,7 @@ public class Menu{
             boolean quebraDescarregar = false;
             quebra = false;
             System.out.println("""
-                    
+                     
                     1. Digitar novo trecho
                     2. Calcular custo total
                     """);
