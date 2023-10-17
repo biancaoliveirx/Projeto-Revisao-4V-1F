@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Menu extends Caminhoes {
 
-    Scanner leitor = new Scanner(System.in);
+    Scanner leitor;
 
     private Distancia distancias = new Distancia();
     private Caminhoes caminhoes = new Caminhoes();
@@ -32,6 +32,8 @@ public class Menu extends Caminhoes {
     private String cidadeDestino;
 
     private static Map<String, Double> custoTotalPorProduto = new HashMap<String, Double>();
+
+    private HashMap<String, Double> precoTrecho = new HashMap<String, Double>();
 
     public Menu() { //construtor
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
@@ -65,6 +67,7 @@ public class Menu extends Caminhoes {
     }
 
     private void menuProdutos(){
+        leitor = new Scanner(System.in);
         while (true) { //inicia um loop infinito para exibir o menu e aguardar a entrada do usuário
 
             //exibe as opções do menu no console
@@ -75,7 +78,7 @@ public class Menu extends Caminhoes {
             System.out.println("4. Exibir lista dos produtos disponíveis");
             System.out.println("5. Sair");
 
-            int opcao = leitor.nextInt();
+            int opcao = this.leitor.nextInt();
 
             //usa um bloco switch para determinar qual ação executar com base na opção escolhida
             switch (opcao) {
@@ -104,13 +107,13 @@ public class Menu extends Caminhoes {
     }
 
     public void adicionarProduto() {
-        Scanner scanner = new Scanner(System.in);
+        leitor = new Scanner(System.in);
         System.out.print("Digite o nome do produto que deseja adicionar: ");
-        String nomeProduto = scanner.nextLine();
+        String nomeProduto = leitor.nextLine();
 
         if (produtos.getPesoProduto(nomeProduto) != 0.0) {
             System.out.print("Digite a quantidade desejada: ");
-            int quantidade = scanner.nextInt();
+            int quantidade = leitor.nextInt();
 
             if (quantidade > 0) {
                 if (produtosList.containsKey(nomeProduto)){
@@ -143,9 +146,9 @@ public class Menu extends Caminhoes {
     }
 
     public void excluirProduto() {
-        Scanner scanner = new Scanner(System.in);
+        leitor = new Scanner(System.in);
         System.out.print("Digite o nome do produto que deseja excluir: ");
-        String nomeProduto = scanner.nextLine();
+        String nomeProduto = leitor.nextLine();
 
         if (produtosList.containsKey(nomeProduto)) {
             produtosList.remove(nomeProduto);
@@ -321,10 +324,10 @@ public class Menu extends Caminhoes {
     }
 
     public void solicitarCidadesETransportes(boolean cadastrar) {
-
+        leitor = new Scanner(System.in);
         try {
             System.out.print("Digite a cidade de origem: "); //pede cidade de origem
-            this.cidadeOrigem = leitor.nextLine();
+            this.cidadeOrigem = this.leitor.nextLine();
             if (this.cidadeOrigem.isEmpty()) {
                 throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
             }
@@ -332,7 +335,7 @@ public class Menu extends Caminhoes {
                 throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
             }
             System.out.print("Digite a cidade de destino: "); //pede cidade de destino
-            this.cidadeDestino = leitor.nextLine();
+            this.cidadeDestino = this.leitor.nextLine();
             if (this.cidadeDestino.isEmpty()) {
                 throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
             }
@@ -341,7 +344,7 @@ public class Menu extends Caminhoes {
             }
             if(!cadastrar){
                 System.out.print("Escolha o tipo de caminhão (pequeno, medio, grande): "); //pede o tipo de caminhão
-                this.modalidadeCaminhao = leitor.nextLine();
+                this.modalidadeCaminhao = this.leitor.nextLine();
                 if (this.modalidadeCaminhao.isEmpty()) {
                     throw new InputMismatchException("Os campos precisam ser preenchidos corretamente!");
                 }
@@ -393,9 +396,12 @@ public class Menu extends Caminhoes {
         calculaValorDaViagem(this.cidadeOrigem.toUpperCase(), this.cidadeDestino.toUpperCase(), this.modalidadeCaminhao.toLowerCase());
     }
 
-    public void cadastrarTransportes(){
+    public boolean cadastrarTransportes(){
+        leitor = new Scanner(System.in);
+        double custoTotal = 0;
         boolean continuarPrograma = false;
         int opcao;
+        boolean quebra = false;
         while (!continuarPrograma){
             System.out.println("""
                 Cadastrar Transportes
@@ -404,8 +410,7 @@ public class Menu extends Caminhoes {
                 3. Cadastrar trecho
                 """);
 
-            opcao = leitor.nextInt();
-            boolean quebra = false;
+            opcao = this.leitor.nextInt();
 
             switch (opcao){
                 case 1:
@@ -429,16 +434,58 @@ public class Menu extends Caminhoes {
         }
 
         System.out.println("Digite o primeiro trecho");
-        solicitarCidadesETransportes(true);
+        this.solicitarCidadesETransportes(true);
+        custoTotal += this.calculaCustoESelecionaMelhoModalidade();
+        String trecho = this.cidadeOrigem + " - " + this.cidadeDestino;
+        this.precoTrecho.put(trecho, custoTotal);
 
-//        boolean finalizar = false;
-//        while (!finalizar){
-//
-//        }
+
+        boolean finalizar = false;
+        while (!finalizar){
+            quebra = false;
+            System.out.println("""
+                    1. Digitar novo trecho
+                    2. Descarregar produtos
+                    3. Calcular custo total
+                    """);
+            opcao = this.leitor.nextInt();
+            switch (opcao){
+                case 1:
+                    this.solicitarCidadesETransportes(true);
+                    quebra = true;
+                case 2:
+                    if (!quebra){
+                        this.descarregarProdutos();
+                        custoTotal += this.calculaCustoESelecionaMelhoModalidade();
+                        trecho = this.cidadeOrigem + " - " + this.cidadeDestino;
+                        this.precoTrecho.put(trecho, custoTotal);
+                        quebra = true;
+
+                    }
+                case 3:
+                    if(!quebra){
+                        System.out.println(custoTotal);
+                        quebra = true;
+                        finalizar = true;
+                    }
+                default:
+                    if(!quebra){
+                        System.out.println("Essa opção não existe no menu! Digite uma opção válida.");
+                    }
+            }
+  
+        }
+
+        System.out.println("Descrição do custo:");
+        for (Map.Entry<String, Double> trechoPreco: this.precoTrecho.entrySet()){
+            System.out.println("Trecho " + trechoPreco.getKey() + " - R$" + trechoPreco.getValue());
+        }
+        System.out.println("O custo total R$" + custoTotal);
+        return true;
 
     }
 
-    private void calculaCustoESelecionaMelhoModalidade() {
+    private double calculaCustoESelecionaMelhoModalidade() {
 
         // calculando peso dos produtos e peso total
         this.pesoPorQuantidadeProduto = new HashMap<String, Double>();
@@ -478,6 +525,8 @@ public class Menu extends Caminhoes {
                 } else if (pesoTotal < 1 && pesoTotal > 0) {
                     caminhaoPequeno++;
                     fim = true;
+                } else {
+                    fim = true;
                 }
             }
 
@@ -486,12 +535,40 @@ public class Menu extends Caminhoes {
             }
         }
 
-        int distanciaTrecho = distancias.calcularDistanciaEntreCidades(this.cidadeOrigem, this.cidadeDestino);
+        int distanciaTrecho = distancias.calcularDistanciaEntreCidades(this.cidadeOrigem.toUpperCase(), this.cidadeDestino.toUpperCase());
         double custoCaminhaoPequeno = caminhaoPequeno * caminhoes.getPrecoPorKm("pequeno") * distanciaTrecho;
         double custoCaminhaoMedio = caminhaoMedio * caminhoes.getPrecoPorKm("medio") * distanciaTrecho;
         double custoCaminhaoGrande = caminhaoGrande * caminhoes.getPrecoPorKm("grande") * distanciaTrecho;
         double custoTrecho = custoCaminhaoPequeno + custoCaminhaoMedio + custoCaminhaoGrande;
-        System.out.println(custoTrecho);
+        return custoTrecho;
+    }
+
+    private void descarregarProdutos(){
+        this.leitor = new Scanner(System.in);
+        String produto;
+        int quantidade;
+        boolean fim = false;
+
+        do {
+            System.out.print("Digite o produto ou aperte ENTER para CANCELAR: ");
+            produto = this.leitor.nextLine();
+            if (produto.isEmpty()){
+                fim = true;
+            } else if(!this.produtosList.containsKey(produto)) {
+                System.out.println("Este produto não está na lista");
+                this.descarregarProdutos();
+            } else {
+                System.out.print("Digite a quantidade:");
+                quantidade = this.leitor.nextInt();
+                if (quantidade <= 0 || quantidade > this.produtosList.get(produto)){
+                    System.out.println("Quantidade inválida.");
+                    this.descarregarProdutos();
+                } else {
+                    this.produtosList.put(produto, this.produtosList.get(produto) - quantidade);
+                    System.out.println("Descarga salva!");
+                }
+            }
+        } while (!fim);
     }
 //    public void cadastrarTransportes() {
 //        cidadesEscolhidas = new ArrayList<String>();
