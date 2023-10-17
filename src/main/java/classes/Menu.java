@@ -10,9 +10,7 @@ public class Menu extends Caminhoes {
     private Caminhoes caminhoes = new Caminhoes();
     private Map<String, Integer> produtosList; //produtosList: Um mapa que será usado para armazenar os produtos e suas quantidades
     private Map<String, Double> pesoPorQuantidadeProduto;
-
     private HashMap<String, HashMap<String, Integer>> produtosDescarregados = new HashMap<String, HashMap<String, Integer>>();
-
     private ArrayList<String> cidadesEscolhidas;
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
     private List<Transporte> transportes;
@@ -61,22 +59,27 @@ public class Menu extends Caminhoes {
 //        listarCidades();
 //        listarModaldidadesDeCaminhao();
 //        listarNomesProdutos();
-
 //        Scanner scanner = new Scanner(System.in);
+//        public void consultarTrechoPorModalidade() {}
 
     }
 
-    private void menuProdutos(){
+    public void menuProdutos() {
         leitor = new Scanner(System.in);
-        while (true) { //inicia um loop infinito para exibir o menu e aguardar a entrada do usuário
+
+        boolean voltarAoMenuPrincipal = false;
+
+        while (!voltarAoMenuPrincipal) { //inicia um loop infinito para exibir o menu e aguardar a entrada do usuário
 
             //exibe as opções do menu no console
-            System.out.println("\nMenu:");
-            System.out.println("1. Adicionar produto à lista");
-            System.out.println("2. Exibir produtos da lista");
-            System.out.println("3. Excluir produto da lista");
-            System.out.println("4. Exibir lista dos produtos disponíveis");
-            System.out.println("5. Sair");
+            System.out.println("""
+                                Menu de produtos:
+                                1. Adicionar produto à lista
+                                2. Exibir produtos da lista
+                                3. Excluir produto da lista
+                                4. Exibir lista dos produtos disponíveis
+                                5. Sair
+                                """);
 
             int opcao = this.leitor.nextInt();
 
@@ -95,15 +98,12 @@ public class Menu extends Caminhoes {
                     listarNomesProdutos();
                     break;
                 case 5:
-                    this.cadastrarTransportes();
+                    voltarAoMenuPrincipal = true; // Configura o sinalizador para voltar ao menu principal
+                    break;
                 default:
                     System.out.println("Essa opção não existe no menu! Digite uma opção válida.");
             }
         }
-    }
-
-    public void consultarTrechoPorModalidade() {
-
     }
 
     public void adicionarProduto() {
@@ -116,7 +116,7 @@ public class Menu extends Caminhoes {
             int quantidade = leitor.nextInt();
 
             if (quantidade > 0) {
-                if (produtosList.containsKey(nomeProduto)){
+                if (produtosList.containsKey(nomeProduto)) {
                     produtosList.put(nomeProduto, produtosList.get(nomeProduto) + quantidade);
                     System.out.println("Produto adicionado à lista: " + nomeProduto + "\nQuantidade: " + quantidade);
                 } else {
@@ -172,8 +172,7 @@ public class Menu extends Caminhoes {
 
     private void listarModaldidadesDeCaminhao() {
         // Listando as modalidades de caminhão quando a classe Menu é instânciada
-        System.out.println("Modalidades de caminhão:\n" +
-                "Pequeno [1 tonelada] -  Médio [4 toneladas] -  Grande [10 toneladas]");
+        System.out.println("Modalidades de caminhão:\n" + "Pequeno [1 tonelada] -  Médio [4 toneladas] -  Grande [10 toneladas]");
 
     }
 
@@ -342,7 +341,7 @@ public class Menu extends Caminhoes {
             if (!Arrays.asList(distancias.getCidades()).contains(this.cidadeDestino.toUpperCase())) {
                 throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
             }
-            if(!cadastrar){
+            if (!cadastrar) {
                 System.out.print("Escolha o tipo de caminhão (pequeno, medio, grande): "); //pede o tipo de caminhão
                 this.modalidadeCaminhao = this.leitor.nextLine();
                 if (this.modalidadeCaminhao.isEmpty()) {
@@ -376,9 +375,10 @@ public class Menu extends Caminhoes {
             System.out.println(produto + " - " + custoTotalPorProduto.get(produto));
         }
     }
-    private HashMap<String, Double> calculaValorMedioProduto(){
+
+    private HashMap<String, Double> calculaValorMedioProduto() {
         HashMap<String, Double> valorMedioProduto = new HashMap<String, Double>();
-        for (Map.Entry<String, Integer> produto: totalDeCadaTipoDeItemTransportado.entrySet()){
+        for (Map.Entry<String, Integer> produto : totalDeCadaTipoDeItemTransportado.entrySet()) {
             // primeiro pega o valor total do produto e depois divide pela quantidade de produto que já foi cadastrado
             double valorMedio = custoTotalPorProduto.get(produto.getKey()) / produto.getValue();
             valorMedioProduto.put(produto.getKey(), valorMedio);
@@ -396,38 +396,39 @@ public class Menu extends Caminhoes {
         calculaValorDaViagem(this.cidadeOrigem.toUpperCase(), this.cidadeDestino.toUpperCase(), this.modalidadeCaminhao.toLowerCase());
     }
 
-    public boolean cadastrarTransportes(){
+    public boolean cadastrarTransportes() {
         leitor = new Scanner(System.in);
         double custoTotal = 0;
         boolean continuarPrograma = false;
         int opcao;
         boolean quebra = false;
-        while (!continuarPrograma){
+        while (!continuarPrograma) {
             System.out.println("""
-                Cadastrar Transportes
-                1. Listar Cidades
-                2. Adicionar Produtos
-                3. Cadastrar trecho
-                """);
+                    Cadastrar Transportes
+                    1. Listar Cidades
+                    2. Adicionar Produtos
+                    3. Cadastrar trecho
+                    """);
 
             opcao = this.leitor.nextInt();
 
-            switch (opcao){
+            switch (opcao) {
                 case 1:
                     this.listarCidades();
                     quebra = true;
                 case 2:
-                    if (!quebra){
+                    if (!quebra) {
                         this.menuProdutos();
                         quebra = true;
                     }
                 case 3:
-                    if(!quebra){
+                    if (!quebra) {
                         quebra = true;
+                        this.solicitarCidadesETransportes(true);
                         continuarPrograma = true;
                     }
                 default:
-                    if(!quebra){
+                    if (!quebra) {
                         System.out.println("Essa opção não existe no menu! Digite uma opção válida.");
                     }
             }
@@ -441,7 +442,7 @@ public class Menu extends Caminhoes {
 
 
         boolean finalizar = false;
-        while (!finalizar){
+        while (!finalizar) {
             quebra = false;
             System.out.println("""
                     1. Digitar novo trecho
@@ -449,12 +450,12 @@ public class Menu extends Caminhoes {
                     3. Calcular custo total
                     """);
             opcao = this.leitor.nextInt();
-            switch (opcao){
+            switch (opcao) {
                 case 1:
                     this.solicitarCidadesETransportes(true);
                     quebra = true;
                 case 2:
-                    if (!quebra){
+                    if (!quebra) {
                         this.descarregarProdutos();
                         custoTotal += this.calculaCustoESelecionaMelhoModalidade();
                         trecho = this.cidadeOrigem + " - " + this.cidadeDestino;
@@ -463,21 +464,21 @@ public class Menu extends Caminhoes {
 
                     }
                 case 3:
-                    if(!quebra){
+                    if (!quebra) {
                         System.out.println(custoTotal);
                         quebra = true;
                         finalizar = true;
                     }
                 default:
-                    if(!quebra){
+                    if (!quebra) {
                         System.out.println("Essa opção não existe no menu! Digite uma opção válida.");
                     }
             }
-  
+
         }
 
         System.out.println("Descrição do custo:");
-        for (Map.Entry<String, Double> trechoPreco: this.precoTrecho.entrySet()){
+        for (Map.Entry<String, Double> trechoPreco : this.precoTrecho.entrySet()) {
             System.out.println("Trecho " + trechoPreco.getKey() + " - R$" + trechoPreco.getValue());
         }
         System.out.println("O custo total R$" + custoTotal);
@@ -543,7 +544,7 @@ public class Menu extends Caminhoes {
         return custoTrecho;
     }
 
-    private void descarregarProdutos(){
+    private void descarregarProdutos() {
         this.leitor = new Scanner(System.in);
         String produto;
         int quantidade;
@@ -552,15 +553,15 @@ public class Menu extends Caminhoes {
         do {
             System.out.print("Digite o produto ou aperte ENTER para CANCELAR: ");
             produto = this.leitor.nextLine();
-            if (produto.isEmpty()){
+            if (produto.isEmpty()) {
                 fim = true;
-            } else if(!this.produtosList.containsKey(produto)) {
+            } else if (!this.produtosList.containsKey(produto)) {
                 System.out.println("Este produto não está na lista");
                 this.descarregarProdutos();
             } else {
                 System.out.print("Digite a quantidade:");
                 quantidade = this.leitor.nextInt();
-                if (quantidade <= 0 || quantidade > this.produtosList.get(produto)){
+                if (quantidade <= 0 || quantidade > this.produtosList.get(produto)) {
                     System.out.println("Quantidade inválida.");
                     this.descarregarProdutos();
                 } else {
