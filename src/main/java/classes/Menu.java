@@ -44,10 +44,11 @@ public class Menu{
         System.out.println(" ");
     }
 
-    public void exibirMenu(){
+    public boolean exibirMenu(){
         listarCidades();
         listarModaldidadesDeCaminhao();
         listarNomesProdutos();
+        return true;
     }
 
     public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
@@ -144,7 +145,7 @@ public class Menu{
         }
     }
 
-    public void listarProdutos() {
+    public boolean listarProdutos() {
         if (produtosList.isEmpty()) {
             System.out.println("A lista de produtos está vazia.");
         } else {
@@ -153,6 +154,7 @@ public class Menu{
                 System.out.println(entry.getKey() + " - Quantidade: " + entry.getValue());
             }
         }
+        return true;
     }
 
     public void excluirProduto() {
@@ -187,11 +189,12 @@ public class Menu{
 
     }
 
-    public void atualizarCustoTotal() {
+    public boolean atualizarCustoTotal() {
         // soma o custo total com o valor
         for (Map.Entry<String, Double> custo : this.precoTrecho.entrySet()) {
             custoTotal += custo.getValue();
         }
+        return true;
     }
 
     public void atualizarCustoMedioKm() {
@@ -199,7 +202,7 @@ public class Menu{
         System.out.println(custoMedioPorKm);
     }
 
-    public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens) {
+    public boolean atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens) {
 
         // verifica esse item já foi inserido na lista de item específico transportado
         if (totalDeCadaTipoDeItemTransportado.containsKey(produto)) {
@@ -224,6 +227,7 @@ public class Menu{
 
         // atualiza a lista total de itens transportados
         totalDeItensTransportados += quantidadeDeItens;
+        return true;
     }
 
     private void atualizarNumeroTotalDeVeiculosDeslocados(int quantidadeDeVeiculos) {
@@ -267,7 +271,7 @@ public class Menu{
         }
     }
 
-    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao, int quantidade, int distancia) {
+    public boolean atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao, int quantidade, int distancia) {
         if (totalDeCustoPorModalidadeDeTransporte.containsKey(tipoCaminhao)) {
             for (Map.Entry<String, Double> tipo : totalDeCustoPorModalidadeDeTransporte.entrySet()) {
                 if (tipo.getKey().equalsIgnoreCase(tipoCaminhao)) {
@@ -279,16 +283,17 @@ public class Menu{
             double valor = quantidade * caminhoes.getPrecoPorKm(tipoCaminhao) * distancia;
             totalDeCustoPorModalidadeDeTransporte.put(tipoCaminhao, valor);
         }
+        return true;
     }
 
     //método para calcular o valor da viagem de uma cidade para a outra
-    public void calculaValorDaViagem(String cidadeOrigem, String cidadeDestino, String tipoCaminhao) {
+    public boolean calculaValorDaViagem(String cidadeOrigem, String cidadeDestino, String tipoCaminhao) {
         Distancia distancia = new Distancia(); //instância a classe Distancia para calcular a distância entre cidades
 
         int distanciaKm = distancia.calcularDistanciaEntreCidades(cidadeOrigem, cidadeDestino);
         if (distanciaKm <= 0) { //verifica se distância > 0
             System.out.println("As cidades " + cidadeOrigem + " e " + cidadeDestino + " estão na mesma localização ou a distância não foi encontrada na nossa base de dados.");
-            return;
+            return true;
         }
 
         double precoPorKm = caminhoes.getPrecoPorKm(tipoCaminhao);
@@ -297,6 +302,7 @@ public class Menu{
         System.out.println("A distância entre " + cidadeOrigem + " e " + cidadeDestino + ": " + distanciaKm + " km");
         System.out.println("Modalidade de caminhão escolhido: " + tipoCaminhao);
         System.out.println("Custo da viagem: R$" + custoTransporte);
+        return true;
     }
 
     public void solicitarCidadesETransportes(boolean cadastrar) {
@@ -573,7 +579,7 @@ public class Menu{
         } while (!fim);
     }
 
-    public void relatorioTransportesCadastrados() {
+    public boolean relatorioTransportesCadastrados() {
         // custoTotal, custoTotalPorTrecho, custoTotalPorModalidadeTransporte, numeroTotalVeiculosDeslocados, totalItensTransportados
 
         System.out.println("Número total de veículos deslocados :" + numeroTotalVeiculosDeslocados);
@@ -602,6 +608,7 @@ public class Menu{
             double mediaProduto = produtoValor.getValue() / totalDeCadaTipoDeItemTransportado.get(produtoValor.getKey());
             System.out.println("Produto: " + produtoValor.getKey() + " - R$" + format("%.2f", mediaProduto));
         }
+        return true;
     }
 }
 

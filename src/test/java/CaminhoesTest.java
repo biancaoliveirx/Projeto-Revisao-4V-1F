@@ -35,13 +35,13 @@ public class CaminhoesTest {
     @Test
     public void getCapacidadeMaximaTonelada() {
         Caminhoes caminhoes = new Caminhoes();
-        double capacidadeCaminhaoPequeno = caminhoes.getCapacidadeMaximaTonelada("pequeno");
+        double capacidadeCaminhaoPequeno = caminhoes.getCapacidadeToneladas("pequeno");
         assertEquals(1, capacidadeCaminhaoPequeno);
 
-        double capacidadeCaminhaoMedio = caminhoes.getCapacidadeMaximaTonelada("medio");
+        double capacidadeCaminhaoMedio = caminhoes.getCapacidadeToneladas("medio");
         assertEquals(4, capacidadeCaminhaoMedio);
 
-        double capacidadeCaminhaoGrande = caminhoes.getCapacidadeMaximaTonelada("grande");
+        double capacidadeCaminhaoGrande = caminhoes.getCapacidadeToneladas("grande");
         assertEquals(10, capacidadeCaminhaoGrande);
     }
 
@@ -49,7 +49,7 @@ public class CaminhoesTest {
     public void getCapacidadeMaximaToneladaExcecao() {
         Caminhoes caminhoes = new Caminhoes();
         try {
-            double precoCaminhaoInvalido = caminhoes.getCapacidadeMaximaTonelada("gigante");
+            double precoCaminhaoInvalido = caminhoes.getCapacidadeToneladas("gigante");
         } catch (IllegalArgumentException exception) {
             assertEquals("Modalidade de caminhão inválida", exception.getMessage());
 
