@@ -1,56 +1,46 @@
 package classes;
 
+import java.util.HashMap;
+import java.util.Map;
 public class Caminhoes {
 
-    private double[] precoPorKm = {5.83, 13.42, 29.21};
-    private double[] capacidadeMaximaTonelada = {1, 4, 10};
+    private Map<String, Double> precoPorKm = new HashMap<>();
+    private Map<String, Double> capacidadeToneladas = new HashMap<>();
+    private String[] tipoCaminhoes = {"pequeno", "medio", "grande"};
 
     public Caminhoes() {
+        //inicia os preços por km para cada tipo de caminhão
+        precoPorKm.put("pequeno", 5.83);
+        precoPorKm.put("medio", 13.42);
+        precoPorKm.put("grande", 29.21);
+
+        //inicia as capacidades máximas em toneladas para cada tipo de caminhão
+        capacidadeToneladas.put("pequeno", 1.0);
+        capacidadeToneladas.put("medio", 4.0);
+        capacidadeToneladas.put("grande", 10.0);
+    }
+
+    public String[] getTipoCaminhoes() {
+        return this.tipoCaminhoes;
     }
 
     public double getPrecoPorKm(String tipoCaminhao) {
-        try {
-            // pega preço por km conforme o tipo do caminhão
-            switch (tipoCaminhao) {
-                case "pequeno":
-                    return this.precoPorKm[0];
-                case "medio":
-                    return this.precoPorKm[1];
-                case "grande":
-                    return this.precoPorKm[2];
-                default:
-                    // mensagem de erro do try catch
-                    throw new IllegalArgumentException("Modalidade de caminhão inválida");
-
-            }
-            // chamando o throw new
-        } catch (IllegalArgumentException exception) {
-            System.out.println(exception.getMessage());
+        //verifica se o tipo de caminhão existe no mapa de preços por km
+        if (precoPorKm.containsKey(tipoCaminhao)) {
+            return precoPorKm.get(tipoCaminhao);
+        } else {
+            System.out.println("Modalidade de caminhão inválida.");
+            return 0;
         }
-        return 0;
     }
 
-    public double getCapacidadeMaximaTonelada(String tipoCapacidade) {
-        try {
-            // pega a capacidade por tonelada conforme o tipo do caminhão
-            switch (tipoCapacidade) {
-                case "pequeno":
-                    return this.capacidadeMaximaTonelada[0];
-                case "medio":
-                    return this.capacidadeMaximaTonelada[1];
-                case "grande":
-                    return this.capacidadeMaximaTonelada[2];
-                default:
-                    // mensagem de erro do try catch
-                    throw new IllegalArgumentException("Modalidade de caminhão inválida");
-
-            }
-            // chamando o throw new
-        } catch (IllegalArgumentException exception) {
-            System.out.println(exception.getMessage());
+    public double getCapacidadeToneladas(String tipoCaminhao) {
+        //verifica se o tipo de caminhão existe no mapa de capacidades máximas em toneladas.
+        if (capacidadeToneladas.containsKey(tipoCaminhao)) {
+            return capacidadeToneladas.get(tipoCaminhao);
+        } else {
+            System.out.println("Modalidade de caminhão inválida.");
+            return 0;
         }
-        return 0;
     }
-
 }
-

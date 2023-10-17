@@ -1,6 +1,8 @@
 package classes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // Classe Produtos que gerencia os pesos de diferentes produtos.
@@ -13,14 +15,14 @@ public class Produtos {
         produtos = new HashMap<>();
 
         // Adicina produtos e seus pesos correspondentes ao mapa.
-        produtos.put("Celular", 0.7);
-        produtos.put("Geladeira", 50.0);
-        produtos.put("Air Fryer", 3.5);
-        produtos.put("Cadeira", 5.0);
-        produtos.put("Luminária", 0.8);
-        produtos.put("Lavadora de roupa", 15.0);
-        produtos.put("PlayStation 5", 3.9);
-        produtos.put("Nintendo Switch", 0.3);
+        produtos.put("CELULAR", 0.7);
+        produtos.put("GELADEIRA", 50.0);
+        produtos.put("AIR FRYER", 3.5);
+        produtos.put("CADEIRA", 5.0);
+        produtos.put("LUMINARIA", 0.8);
+        produtos.put("LAVADORA DE ROUPA", 15.0);
+        produtos.put("PLAYSTATION 5", 3.9);
+        produtos.put("NINTENDO SWITCH", 0.3);
     }
 
     // Método que retorna o peso de um produto específico.
@@ -31,7 +33,7 @@ public class Produtos {
                 throw new IllegalArgumentException("Nome do produto não pode ser null");
             }
 
-            // Se o produto existir no mapa, retorna seu peso.
+            // Se o produto existir no mapa, retorna seu nome e peso.
             if (produtos.containsKey(nomeProduto)) {
                 return produtos.get(nomeProduto);
             } else {
@@ -45,6 +47,7 @@ public class Produtos {
             return 0;
         }
     }
+    public List<String> getNomesProdutos() {
+        return new ArrayList<>(produtos.keySet());
+    }
 }
-
-
