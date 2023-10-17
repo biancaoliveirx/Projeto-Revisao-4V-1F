@@ -435,7 +435,7 @@ public class Menu{
             boolean quebraDescarregar = false;
             quebra = false;
             System.out.println("""
-                    
+                     
                     1. Digitar novo trecho
                     2. Calcular custo total
                     """);
@@ -583,6 +583,8 @@ public class Menu{
                 } else {
                     this.produtosList.put(produto, this.produtosList.get(produto) - quantidade);
                     System.out.println("Descarga salva! \n");
+
+                    this.leitor.nextLine();
                 }
             } else {
                 System.out.println("Este produto não está na lista");
