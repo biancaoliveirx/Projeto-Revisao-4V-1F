@@ -8,29 +8,29 @@ public class ProdutosTest {
     public void getPesoProduto() {
         Produtos produtos = new Produtos();
 
-        double pesoCelular = produtos.getPesoProduto("Celular");
+        double pesoCelular = produtos.getPesoProduto("CELULAR");
         // assertEquals pega o que ele espera e compara com o resultado
         assertEquals(0.7, pesoCelular);
 
-        double pesoGeladeira = produtos.getPesoProduto("Geladeira");
+        double pesoGeladeira = produtos.getPesoProduto("GELADEIRA");
         assertEquals(50.0, pesoGeladeira);
 
-        double pesoAirFryer = produtos.getPesoProduto("Air Fryer");
+        double pesoAirFryer = produtos.getPesoProduto("AIR FRYER");
         assertEquals(3.5, pesoAirFryer);
 
-        double pesoCadeira = produtos.getPesoProduto("Cadeira");
+        double pesoCadeira = produtos.getPesoProduto("CADEIRA");
         assertEquals(5.0, pesoCadeira);
 
-        double pesoLuminaria = produtos.getPesoProduto("Luminária");
+        double pesoLuminaria = produtos.getPesoProduto("LUMINARIA");
         assertEquals(0.8, pesoLuminaria);
 
-        double pesoLavadoraDeRoupa = produtos.getPesoProduto("Lavadora de roupa");
+        double pesoLavadoraDeRoupa = produtos.getPesoProduto("LAVADORA DE ROUPA");
         assertEquals(15.0, pesoLavadoraDeRoupa);
 
-        double pesoPlayStation5 = produtos.getPesoProduto("PlayStation 5");
+        double pesoPlayStation5 = produtos.getPesoProduto("PLAYSTATION 5");
         assertEquals(3.9, pesoPlayStation5);
 
-        double pesoNintendoSwitch = produtos.getPesoProduto("Nintendo Switch");
+        double pesoNintendoSwitch = produtos.getPesoProduto("NINTENDO SWITCH");
         assertEquals(0.3, pesoNintendoSwitch);
     }
 
