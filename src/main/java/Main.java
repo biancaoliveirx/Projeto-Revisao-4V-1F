@@ -10,6 +10,8 @@ public class Main {
         Menu menu = new Menu();
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("****** AMARELINHA ******");
+
         while (true) {  // inicia um loop para exibir o menu e aguardar a entrada do usuário
             // exibe as opções do menu no console
             System.out.println("\nMenu Principal:");
