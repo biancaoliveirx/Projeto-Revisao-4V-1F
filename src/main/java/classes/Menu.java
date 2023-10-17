@@ -21,7 +21,6 @@ public class Menu{
     private static double custoTotalPorModalidadeDeTransporte = 0;
     private static double custoTotal = 0;
     private static double custoMedioPorKm = 0;
-    private static int numeroTotalVeiculosDeslocados = 0;
     private List<Produtos> itensParaTransportar;
     private static Map<String, Integer> totalDeCadaTipoDeItemTransportado = new HashMap<String, Integer>();
     private static Map<String, Double> totalDeCustoPorModalidadeDeTransporte = new HashMap<String, Double>();
@@ -196,7 +195,6 @@ public class Menu{
 
     public void atualizarCustoMedioKm() {
         custoMedioPorKm = custoTotal / totalKm;
-        System.out.println(custoMedioPorKm);
     }
 
     public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens) {
@@ -347,11 +345,12 @@ public class Menu{
                 // se ele ta na lista vai aumentar o valor do produto
                 // faz o valor total dos produtos
                 custoTotalPorProduto.put(produto.getKey(), custoTotalPorProduto.get(produto.getKey()) + custoProduto);
-
+                System.out.println(produto.getKey() + " - " + custoTotalPorProduto.get(produto.getKey()));
             } else {
                 // se nao ta na lista
                 // ele adiciona o novo produto na lista com o novo valor total
                 custoTotalPorProduto.put(produto.getKey(), custoProduto);
+                System.out.println(produto.getKey() + " - " + custoTotalPorProduto.get(produto.getKey()));
             }
         }
 
@@ -425,31 +424,47 @@ public class Menu{
         String trecho = this.cidadeOrigem + " - " + this.cidadeDestino;
         this.precoTrecho.put(trecho, custoTotal);
 
-
+        int descarregar;
         boolean finalizar = false;
         while (!finalizar) {
+            boolean quebraDescarregar = false;
             quebra = false;
             System.out.println("""
                     
                     1. Digitar novo trecho
-                    2. Descarregar produtos
-                    3. Calcular custo total
+                    2. Calcular custo total
                     """);
             opcao = this.leitor.nextInt();
             switch (opcao) {
                 case 1:
                     this.solicitarCidadesETransportes(true);
+                    System.out.println("""
+                            Descarregar produtos:
+                            1. Sim
+                            2. Não
+                            """);
+                    descarregar = leitor.nextInt();
+                    switch (descarregar){
+                        case 1:
+                            this.descarregarProdutos();
+                            custoTotal += this.calculaCustoESelecionaMelhoModalidade();
+                            trecho = this.cidadeOrigem + " - " + this.cidadeDestino;
+                            this.precoTrecho.put(trecho, custoTotal);
+                            quebraDescarregar = true;
+                        case 2:
+                            if (!quebraDescarregar){
+                                custoTotal += this.calculaCustoESelecionaMelhoModalidade();
+                                trecho = this.cidadeOrigem + " - " + this.cidadeDestino;
+                                this.precoTrecho.put(trecho, custoTotal);
+                                quebraDescarregar = true;
+                            }
+                        default:
+                            if (!quebraDescarregar){
+                                System.out.println("Essa opção não existe no menu! Digite uma opção válida.");
+                            }
+                    }
                     quebra = true;
                 case 2:
-                    if (!quebra) {
-                        this.descarregarProdutos();
-                        custoTotal += this.calculaCustoESelecionaMelhoModalidade();
-                        trecho = this.cidadeOrigem + " - " + this.cidadeDestino;
-                        this.precoTrecho.put(trecho, custoTotal);
-                        quebra = true;
-
-                    }
-                case 3:
                     if (!quebra) {
                         System.out.println(custoTotal);
                         quebra = true;
@@ -483,6 +498,8 @@ public class Menu{
             pesoPorQuantidadeProduto.put(produto.getKey(), pesoProduto); // adiciona peso do produto
             pesoTotal += pesoProduto; // incrementa peso total
         }
+
+        double pesoTodosOsProdutos = pesoTotal;
 
         // calculando custo total definindo melhores modalidades de transporte
         int caminhaoPequeno = 0;
@@ -537,6 +554,8 @@ public class Menu{
         atualizarCustoTotalPorModalidadeDeTransporte("grande", caminhaoGrande, distanciaTrecho);
         int totalVeiculos = caminhaoPequeno + caminhaoMedio + caminhaoGrande;
         atualizarNumeroTotalDeVeiculosDeslocados(totalVeiculos);
+        atualizarCustoMedioKm();
+        atualizarCustoTotalPorProduto(pesoTodosOsProdutos,custoTrecho);
         return custoTrecho;
     }
 
@@ -545,48 +564,37 @@ public class Menu{
         String produto;
         int quantidade;
         boolean fim = false;
-        boolean pularLinha = false;
 
         do {
-            if (pularLinha) {
-                System.out.println("\n");
-            }
             System.out.print("Digite o produto ou aperte ENTER para CANCELAR: ");
             produto = this.leitor.nextLine().toUpperCase();
             if (produto.isEmpty()) {
                 fim = true;
-            } else if (!this.produtosList.containsKey(produto)) {
-                System.out.println("Este produto não está na lista");
-                fim = true;
-            } else {
+            } else if(this.produtosList.containsKey(produto)){
                 System.out.print("Digite a quantidade:");
                 quantidade = this.leitor.nextInt();
                 if (quantidade <= 0 || quantidade > this.produtosList.get(produto)) {
                     System.out.println("Quantidade inválida.");
-                    fim = true;
                 } else {
                     this.produtosList.put(produto, this.produtosList.get(produto) - quantidade);
-                    System.out.println("Descarga salva!");
-                    pularLinha = true;
+                    System.out.println("Descarga salva! \n");
                 }
+            } else {
+                System.out.println("Este produto não está na lista");
             }
         } while (!fim);
     }
 
     public void relatorioTransportesCadastrados() {
-        // custoTotal, custoTotalPorTrecho, custoTotalPorModalidadeTransporte, numeroTotalVeiculosDeslocados, totalItensTransportados
-
-        System.out.println("Número total de veículos deslocados :" + numeroTotalVeiculosDeslocados);
+        atualizarCustoMedioKm();
+        System.out.println("Número total de veículos deslocados :" + numeroTotalDeVeiculosDeslocados);
         System.out.println("Número total de itens transportados :" + totalDeItensTransportados);
         System.out.println("Número do custo total R$: " + format("%.2f", custoTotal));
         System.out.println("Custo por trecho: ");
         for (HashMap.Entry<String, HashMap<String, Double>> trechosModalidade : custoPorTrecho.entrySet()) {
-            for (int i = 0; i < caminhoes.getTipoCaminhoes().length; i++) {
-                System.out.println("Modalidade: " + trechosModalidade.getValue().toString().toUpperCase());
                 for (Map.Entry<String, Double> trecho : trechosModalidade.getValue().entrySet()) {
-                    System.out.println("         " + trecho.getKey() + " R$" + format("%.2f", trecho.getValue()));
+                    System.out.println("Modalidade: "+ trechosModalidade.getKey().toUpperCase() +" - " + trecho.getKey() + " R$" + format("%.2f", trecho.getValue()));
                 }
-            }
         }
         System.out.println("Custo total por trecho: ");
         for (Map.Entry<String, Double> trecho : custoTotalPorTrecho.entrySet()) {
@@ -597,10 +605,10 @@ public class Menu{
             System.out.println("Modalidade: " + custoTotalModalidade.getKey() + " - R$" + format("%.2f", custoTotalModalidade.getValue()));
         }
         System.out.println("Custo médio por Km: R$" + format("%.2f", custoMedioPorKm));
-        System.out.println("Custo médio por produto: R$ ");
+        System.out.println("Custo médio por produto: ");
         for(Map.Entry<String, Double> produtoValor : custoTotalPorProduto.entrySet()){
             double mediaProduto = produtoValor.getValue() / totalDeCadaTipoDeItemTransportado.get(produtoValor.getKey());
-            System.out.println("Produto: " + produtoValor.getKey() + " - R$" + format("%.2f", mediaProduto));
+            System.out.println("          " + produtoValor.getKey() + " - R$" + format("%.2f", mediaProduto));
         }
     }
 }
