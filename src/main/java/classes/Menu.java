@@ -1,9 +1,10 @@
 package classes;
 
-import java.text.Normalizer;
 import java.util.*;
 
-public class Menu extends Caminhoes {
+import static java.lang.String.format;
+
+public class Menu{
 
     Scanner leitor;
 
@@ -16,7 +17,7 @@ public class Menu extends Caminhoes {
 
     private ArrayList<String> cidadesEscolhidas;
     private Produtos produtos; //produtos: Uma instância da classe Produtos, que é usada para obter informações sobre produtos.
-    private List<Transporte> transportes;
+
     private static double custoTotalPorModalidadeDeTransporte = 0;
     private static double custoTotal = 0;
     private static double custoMedioPorKm = 0;
@@ -40,10 +41,7 @@ public class Menu extends Caminhoes {
     public Menu() { //construtor
         produtosList = new HashMap<>(); //inicializa produtosList como um novo mapa vazio
         produtos = new Produtos(); //cria uma instância da classe Produtos e obtém a lista de nomes de produtos chamando o método getNomesProdutos()
-        transportes = new ArrayList<>();
-//        this.listarCidades();
         System.out.println(" ");
-//        this.listarModaldidadesDeCaminhao();
     }
 
     public void listarNomesProdutos() { //esse método é responsável por listar os nomes dos produtos disponíveis
@@ -56,16 +54,6 @@ public class Menu extends Caminhoes {
         for (String nomeProduto : nomesProdutos) { //exibem os nomes dos produtos disponíveis no console
             System.out.println(nomeProduto);
         }
-    }
-
-    public void exibirMenu() { //responsável por exibir o menu principal e interagir com o usuário
-
-//        listarCidades();
-//        listarModaldidadesDeCaminhao();
-//        listarNomesProdutos();
-
-//        Scanner scanner = new Scanner(System.in);
-
     }
 
     private boolean menuProdutos() {
@@ -120,10 +108,6 @@ public class Menu extends Caminhoes {
             }
         }
         return true;
-    }
-
-    public void consultarTrechoPorModalidade() {
-
     }
 
     public void adicionarProduto() {
@@ -208,18 +192,6 @@ public class Menu extends Caminhoes {
         custoMedioPorKm = custoTotal / totalKm;
         System.out.println(custoMedioPorKm);
     }
-//    public void adicionarItensParaTransportar(int quantidade){
-//        //
-//        double peso = this.produtos.getPesoProduto("") * quantidade;
-//        if(peso <= caminhoes.getCapacidadeMaximaTonelada("")){
-//            for (int i = 0; i < quantidade; i++){
-//                itensParaTransportar.add(produtos);
-//            }
-//            System.out.println("Produto(s) adicionado(s): " + quantidade + " : " + this.produtos.getNomesProdutos());
-//        } else {
-//            System.out.println("Capacidade máxima alcançada.");
-//        }
-//    }
 
     public void atualizarTotalDeItensTransportados(String produto, int quantidadeDeItens) {
 
@@ -289,17 +261,6 @@ public class Menu extends Caminhoes {
         }
     }
 
-
-//    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
-//        double custoTotal = 0;
-//        for (Transporte transporte : transportes) {
-//            if (transporte.getTipoCaminhao().equals(tipoCaminhao)) {
-//                custoTotal += transporte.getCusto();
-//            }
-//        }
-//        System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
-//    }
-
     public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao, int quantidade, int distancia) {
         if (totalDeCustoPorModalidadeDeTransporte.containsKey(tipoCaminhao)) {
             for (Map.Entry<String, Double> tipo : totalDeCustoPorModalidadeDeTransporte.entrySet()) {
@@ -332,16 +293,6 @@ public class Menu extends Caminhoes {
         System.out.println("Custo da viagem: R$" + custoTransporte);
     }
 
-    public void atualizarCustoTotalPorModalidadeDeTransporte(String tipoCaminhao) {
-        double custoTotal = 0;
-        for (Transporte transporte : transportes) {
-            if (transporte.getTipoCaminhao().equals(tipoCaminhao)) {
-                custoTotal += transporte.getCusto();
-            }
-        }
-        System.out.println("Custo total para a modalidade " + tipoCaminhao + ": R$" + custoTotal);
-    }
-
     public void solicitarCidadesETransportes(boolean cadastrar) {
         leitor = new Scanner(System.in);
         try {
@@ -352,6 +303,9 @@ public class Menu extends Caminhoes {
             }
             if (!Arrays.asList(distancias.getCidades()).contains(this.cidadeOrigem.toUpperCase())) {
                 throw new IllegalArgumentException("A cidade escolhida não existe no nosso banco de dados!");
+            }
+            if (this.cidadeDestino != null && !this.cidadeOrigem.equalsIgnoreCase(this.cidadeDestino)){
+                throw new IllegalArgumentException("Para um novo trecho a cidade de origem deve ser igual a cidade de destino!");
             }
             System.out.print("Digite a cidade de destino: "); //pede cidade de destino
             this.cidadeDestino = this.leitor.nextLine().toUpperCase();
@@ -409,6 +363,8 @@ public class Menu extends Caminhoes {
     }
 
     public void consultarTrechosEModalidades() {
+        this.cidadeOrigem = null;
+        this.cidadeDestino = null;
         System.out.println("\nTrechos disponíveis para transporte: ");
         listarCidades();
 
@@ -418,6 +374,8 @@ public class Menu extends Caminhoes {
     }
 
     public boolean cadastrarTransportes() {
+        this.cidadeOrigem = null;
+        this.cidadeDestino = null;
         leitor = new Scanner(System.in);
         double custoTotal = 0;
         boolean continuarPrograma = false;
@@ -466,6 +424,7 @@ public class Menu extends Caminhoes {
         while (!finalizar) {
             quebra = false;
             System.out.println("""
+                    
                     1. Digitar novo trecho
                     2. Descarregar produtos
                     3. Calcular custo total
@@ -500,9 +459,9 @@ public class Menu extends Caminhoes {
 
         System.out.println("Descrição do custo:");
         for (Map.Entry<String, Double> trechoPreco : this.precoTrecho.entrySet()) {
-            System.out.println("Trecho " + trechoPreco.getKey() + " - R$" + trechoPreco.getValue());
+            System.out.println("Trecho " + trechoPreco.getKey() + " - R$" + format("%.2f", trechoPreco.getValue()));
         }
-        System.out.println("O custo total R$" + custoTotal);
+        System.out.println("O custo total R$" + format("%.2f", custoTotal));
         atualizarCustoTotal();
         return true;
 
@@ -592,13 +551,13 @@ public class Menu extends Caminhoes {
                 fim = true;
             } else if (!this.produtosList.containsKey(produto)) {
                 System.out.println("Este produto não está na lista");
-                this.descarregarProdutos();
+                fim = true;
             } else {
                 System.out.print("Digite a quantidade:");
                 quantidade = this.leitor.nextInt();
                 if (quantidade <= 0 || quantidade > this.produtosList.get(produto)) {
                     System.out.println("Quantidade inválida.");
-                    this.descarregarProdutos();
+                    fim = true;
                 } else {
                     this.produtosList.put(produto, this.produtosList.get(produto) - quantidade);
                     System.out.println("Descarga salva!");
@@ -613,29 +572,29 @@ public class Menu extends Caminhoes {
 
         System.out.println("Número total de veículos deslocados :" + numeroTotalVeiculosDeslocados);
         System.out.println("Número total de itens transportados :" + totalDeItensTransportados);
-        System.out.println("Número do custo total R$: " + custoTotal);
+        System.out.println("Número do custo total R$: " + format("%.2f", custoTotal));
         System.out.println("Custo por trecho: ");
         for (HashMap.Entry<String, HashMap<String, Double>> trechosModalidade : custoPorTrecho.entrySet()) {
             for (int i = 0; i < caminhoes.getTipoCaminhoes().length; i++) {
                 System.out.println("Modalidade: " + trechosModalidade.getValue().toString().toUpperCase());
                 for (Map.Entry<String, Double> trecho : trechosModalidade.getValue().entrySet()) {
-                    System.out.println("         " + trecho.getKey() + " R$" + trecho.getValue());
+                    System.out.println("         " + trecho.getKey() + " R$" + format("%.2f", trecho.getValue()));
                 }
             }
         }
         System.out.println("Custo total por trecho: ");
         for (Map.Entry<String, Double> trecho : custoTotalPorTrecho.entrySet()) {
-            System.out.println(trecho.getKey() + " R$" + trecho.getValue());
+            System.out.println(trecho.getKey() + " R$" + format("%.2f", trecho.getValue()));
         }
         System.out.println("Custo total por modalidade transporte: ");
         for (HashMap.Entry<String, Double> custoTotalModalidade : totalDeCustoPorModalidadeDeTransporte.entrySet()) {
-            System.out.println("Modalidade: " + custoTotalModalidade.getKey() + " - R$" + custoTotalModalidade.getValue());
+            System.out.println("Modalidade: " + custoTotalModalidade.getKey() + " - R$" + format("%.2f", custoTotalModalidade.getValue()));
         }
-        System.out.println("Custo médio por Km: R$" + custoMedioPorKm);
+        System.out.println("Custo médio por Km: R$" + format("%.2f", custoMedioPorKm));
         System.out.println("Custo médio por produto: R$ ");
         for(Map.Entry<String, Double> produtoValor : custoTotalPorProduto.entrySet()){
             double mediaProduto = produtoValor.getValue() / totalDeCadaTipoDeItemTransportado.get(produtoValor.getKey());
-            System.out.println("Produto: " + produtoValor.getKey() + " - R$" + mediaProduto);
+            System.out.println("Produto: " + produtoValor.getKey() + " - R$" + format("%.2f", mediaProduto));
         }
     }
 }
