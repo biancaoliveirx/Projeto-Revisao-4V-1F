@@ -345,12 +345,10 @@ public class Menu{
                 // se ele ta na lista vai aumentar o valor do produto
                 // faz o valor total dos produtos
                 custoTotalPorProduto.put(produto.getKey(), custoTotalPorProduto.get(produto.getKey()) + custoProduto);
-                System.out.println(produto.getKey() + " - " + custoTotalPorProduto.get(produto.getKey()));
             } else {
                 // se nao ta na lista
                 // ele adiciona o novo produto na lista com o novo valor total
                 custoTotalPorProduto.put(produto.getKey(), custoProduto);
-                System.out.println(produto.getKey() + " - " + custoTotalPorProduto.get(produto.getKey()));
             }
         }
 
@@ -578,6 +576,8 @@ public class Menu{
                 } else {
                     this.produtosList.put(produto, this.produtosList.get(produto) - quantidade);
                     System.out.println("Descarga salva! \n");
+
+                    this.leitor.nextLine();
                 }
             } else {
                 System.out.println("Este produto não está na lista");
